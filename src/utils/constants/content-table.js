@@ -4,7 +4,6 @@ import TableCellDateFormat from "../../components/goods-cmp/content-table-cells/
 import TableCellEditAndDelete from "../../components/goods-cmp/content-table-cells/TableCellEditAndDelete";
 import TableCellImage from "../../components/goods-cmp/content-table-cells/TableCellImage";
 import TableCellPriceAndDiscount from "../../components/goods-cmp/content-table-cells/TableCellPriceAndDiscount";
-import TableCellProductCount from "../../components/goods-cmp/content-table-cells/TableCellProductCount";
 import TableCellVendorCode from "../../components/goods-cmp/content-table-cells/TableCellVendorCode";
 
 export const tableHeader = [
@@ -30,12 +29,14 @@ export const tableHeader = [
   },
   {
     Header: "Наименование товара",
-    accessor: "count",
+    accessor: "name",
     style: {
       flex: 1,
     },
     Cell: ({ row }) => {
-      return <TableCellProductCount {...row.original} />;
+      console.log(row.original, "fasdfasdfasd");
+
+      return <p>{row.original.name}</p>;
     },
   },
   {
@@ -50,11 +51,12 @@ export const tableHeader = [
   },
   {
     Header: "Кол-во",
-    accessor: "discount",
+    accessor: "count",
     style: {
       flex: 0.5,
     },
     Cell: ({ row }) => {
+      console.log(row.original);
       return <TableCellCount {...row.original} />;
     },
   },

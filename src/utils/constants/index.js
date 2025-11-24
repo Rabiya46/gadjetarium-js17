@@ -179,6 +179,7 @@ export const catalogMenu_FAKE_DATA = [
   {
     id: 1,
     title: "Смартфоны",
+    titleId: "Smartphones",
     icon: <PhoneIcon />,
     subcategories: [
       { id: 1, title: "Apple" },
@@ -192,6 +193,7 @@ export const catalogMenu_FAKE_DATA = [
     id: 2,
     title: "Ноутбуки",
     icon: <ComputerIcon />,
+    titleId: "Laptops",
     subcategories: [
       { id: 1, title: "Acer" },
       { id: 2, title: "Asus" },
@@ -208,6 +210,7 @@ export const catalogMenu_FAKE_DATA = [
   },
   {
     id: 3,
+    titleId: "Tablets",
     title: "Планшеты",
     icon: <TabletMacIcon color="disabled" />,
     subcategories: [
@@ -228,6 +231,7 @@ export const catalogMenu_FAKE_DATA = [
     id: 4,
     title: "Смарт-часы и браслеты",
     icon: <SmartWatchIcon />,
+    titleId: "Smartwatches",
     subcategories: [
       { id: 1, title: "Смарт-часы Apple Watch" },
       { id: 2, title: "Умные часы для взрослых" },

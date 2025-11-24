@@ -8,6 +8,7 @@ export const fetchDataCatalog = createAsyncThunk(
       const response = await axiosInstance.get(`/api/subproducts/catalog`, {
         params,
       });
+
       if (!response.status === 200) {
         throw new Error("Server error");
       }

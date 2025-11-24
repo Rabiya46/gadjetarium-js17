@@ -120,6 +120,7 @@ const CatalogProducts = () => {
     housingMaterials: filteredCatalog.housingMaterials,
     genders: filteredCatalog.genders,
     waterProofs: filteredCatalog.waterProofs,
+    category: findedCatalogItem.titleId,
   };
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
 
-const TableCellCount = ({ discount }) => {
+const TableCellCount = ({ count }) => {
   return (
     <StyledTableCellCount className="flex-start">
-      {discount}
+      {count} шт.
     </StyledTableCellCount>
   );
 };
