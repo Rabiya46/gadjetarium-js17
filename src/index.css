@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Ubuntu&display=swap");
+
+/*
+font-family: 'Inter', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+
+ Light/Regular/Medium/Semi bold/Bold
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f4f4f4;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.height {
+  height: 100%;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.align-end {
+  display: flex;
+  align-items: flex-end;
+}
+.align-start {
+  display: flex;
+  align-items: flex-start;
+}
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.pointer {
+  cursor: pointer;
+}
+.color-white {
+  color: white;
+}
+.transition {
+  transition: 0.3s;
+}
+.display {
+  display: flex;
+}
+.between {
+  display: flex;
+  justify-content: space-between;
+}
+.center {
+  justify-content: center;
+}
+.padding {
+  padding: 20px;
+}
+.relative {
+  position: relative;
+}
+.flexgrow {
+  flex-grow: 1;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.ul {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.m-auto {
+  margin: 0 auto;
+}
+.none {
+  visibility: hidden;
+  height: 0 !important;
+  width: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+.scroll {
+  overflow: auto;
+}
+.scroll_tab::-webkit-scrollbar {
+  display: none;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.gap {
+  gap: 8px;
+}
+.gap2 {
+  gap: 16px;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.size14 {
+  font-size: 14px;
+}
+
+.background_linear {
+  /* background: #cb11ab;
+  background: linear-gradient(
+    120deg,
+    rgba(203, 17, 171, 1) 5%,
+    rgba(185, 17, 173, 1) 16%,
+    rgba(77, 14, 184, 1) 86%
+  ); */
+  background: linear-gradient(120deg, #cb11ab, #4d0eb8);
+}
+
+.MuiPickersPopper-paper > div > div:first-of-type {
+  display: none !important;
+}
+
+.MuiFormLabel-asterisk {
+  color: red;
+}
+
+.grid {
+  display: grid;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+/* input:-internal-autofill-selected {
+  appearance: inherit;
+  background-image: none !important;
+  background-color: white !important;
+  color: white !important;
+}
+input:-webkit-autofill {
+  color: #2a2a2a !important;
+  background-color: white !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active,
+input:-webkit-autofill:focus {
+  background: white !important;
+  color: #555 !important;
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #555555 !important;
+} */
