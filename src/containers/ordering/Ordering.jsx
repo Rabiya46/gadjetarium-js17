@@ -206,7 +206,7 @@ const Ordering = () => {
                       <Box className="product-name">
                         <Typography>{product.productName}</Typography>
                         <Typography>
-                          {product.characteristics.memoryOfPhone}gb
+                          {product?.characteristics.memoryOfPhone}gb
                         </Typography>
                         <Typography>{product.color.toLowerCase()}</Typography>
                       </Box>

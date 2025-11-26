@@ -43,6 +43,7 @@ const ProductDetails = ({ data, chooseItem, count, images }) => {
   useEffect(() => {
     dispatch(ActionProductDetails.setDetails(findedSubProduct));
   }, [findedSubProduct]);
+
   useEffect(() => {
     window.scroll(0, 0);
   }, []);

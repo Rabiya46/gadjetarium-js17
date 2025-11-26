@@ -53,13 +53,13 @@ const CompareTable = ({ productTable, paramsCompare }) => {
                       <ColorName color={product.color} />
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.memoryOfPhone} GB
+                      {product?.characteristics.memoryOfPhone} GB
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.ramOfPhone}
+                      {product?.characteristics.ramOfPhone}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.simCard}
+                      {product?.characteristics.simCard}
                     </TableCell>
                   </TableBody>
                 ))
@@ -82,16 +82,16 @@ const CompareTable = ({ productTable, paramsCompare }) => {
                       <ColorName color={product.color} />
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.laptopCPU}
+                      {product?.characteristics.laptopCPU}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenResolutionLaptop}
+                      {product?.characteristics.screenResolutionLaptop}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenSizeLaptop}
+                      {product?.characteristics.screenSizeLaptop}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.videoCardMemory} GB
+                      {product?.characteristics.videoCardMemory} GB
                     </TableCell>
                   </TableRow>
                 ))
@@ -113,22 +113,22 @@ const CompareTable = ({ productTable, paramsCompare }) => {
                       <ColorName color={product.color} />
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenResolutionOfTablet}
+                      {product?.characteristics.screenResolutionOfTablet}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.memoryOfTablet} GB
+                      {product?.characteristics.memoryOfTablet} GB
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.ramOfTablet}
+                      {product?.characteristics.ramOfTablet}
                     </TableCell>
                     <TableCell className="td_product_of-table">
-                      {product.characteristics.batteryCapacityOfTablet}
+                      {product?.characteristics.batteryCapacityOfTablet}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenDiagonalOfTablet}
+                      {product?.characteristics.screenDiagonalOfTablet}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenSizeOfTablet}
+                      {product?.characteristics.screenSizeOfTablet}
                     </TableCell>
                   </TableRow>
                 ))
@@ -150,28 +150,28 @@ const CompareTable = ({ productTable, paramsCompare }) => {
                       <ColorName color={product.color} />
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.caseShape}
+                      {product?.characteristics.caseShape}
                     </TableCell>
                     <TableCell className="td_product_of-table">
-                      {product.characteristics.braceletMaterial}
+                      {product?.characteristics.braceletMaterial}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.gender}
+                      {product?.characteristics.gender}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.wirelessInterface}
+                      {product?.characteristics.wirelessInterface}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.memoryOfSmartWatch} GB
+                      {product?.characteristics.memoryOfSmartWatch} GB
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.screenDiagonalOfSmartWatch}
+                      {product?.characteristics.screenDiagonalOfSmartWatch}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.waterProof}
+                      {product?.characteristics.waterProof}
                     </TableCell>
                     <TableCell className="td_product">
-                      {product.characteristics.housingMaterial}
+                      {product?.characteristics.housingMaterial}
                     </TableCell>
                   </TableRow>
                 ))
