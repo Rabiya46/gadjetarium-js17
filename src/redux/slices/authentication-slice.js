@@ -74,7 +74,10 @@ export const fetchDataSignup = createAsyncThunk(
 export const authWithGoogle = createAsyncThunk(
   "authenticationSlice/authWithGoogle",
 
-  async ({ tokenId, navigate, isSignUp }, { rejectWithValue }) => {
+  async (
+    { tokenId, navigate, isSignUp, closeModalWindow },
+    { rejectWithValue }
+  ) => {
     try {
       const { data } = await axiosInstance.post(`/api/auth/google`, {
         idToken: tokenId,
@@ -96,6 +99,10 @@ export const authWithGoogle = createAsyncThunk(
       }
 
       navigate("/");
+
+      if (closeModalWindow) {
+        closeModalWindow();
+      }
 
       return data;
     } catch (error) {

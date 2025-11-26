@@ -9,6 +9,7 @@ const AddProduct = lazy(() => import("../containers/add-product/AddProduct"));
 const Orders = lazy(() => import("../containers/orders/Orders"));
 const AdminLayout = lazy(() => import("../layout/admin"));
 const Goods = lazy(() => import("../containers/goods"));
+const InnerGoods = lazy(() => import("../containers/inner-goods/index"));
 const OrderItem = lazy(() => import("../components/orders/OrderItem"));
 const Forms = lazy(() => import("../components/add_product/Forms"));
 const PriceQuantity = lazy(() => {
@@ -50,7 +51,17 @@ const AdminRoutes = () => {
                 <Goods />
               </Suspense>
             }
-          />
+          >
+            <Route
+              path="product/:productId"
+              element={
+                <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                  <InnerGoods />
+                </Suspense>
+              }
+            />
+          </Route>
+
           <Route
             path={`${ROUTES.ORDERS}`}
             element={
@@ -78,7 +89,7 @@ const AdminRoutes = () => {
           />
         </Route>
         <Route
-          path={`${ROUTES.GOODS}/${ROUTES.PRODUCT}`}
+          path={`goods/product/:productId/subproduct/:subId`}
           element={
             <Suspense fallback={<GadgetariumSpinnerLoading />}>
               <MainProductDetails />

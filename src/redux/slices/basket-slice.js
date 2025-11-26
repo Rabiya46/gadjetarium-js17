@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../config/axios-instance";
+import { toast } from "react-toastify";
 
 const postProductToBasket = createAsyncThunk(
   "basket/postProductToBasket",
@@ -19,6 +20,7 @@ const postProductToBasket = createAsyncThunk(
 
       return result;
     } catch (error) {
+      toast.error(error.response.data.message);
       return error;
     }
   }

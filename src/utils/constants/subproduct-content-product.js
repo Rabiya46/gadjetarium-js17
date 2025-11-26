@@ -34,6 +34,8 @@ export const tableHeader = [
       flex: 1,
     },
     Cell: ({ row }) => {
+      console.log(row.original, "fasdfasdfasd");
+
       return <p>{row.original.name}</p>;
     },
   },
@@ -54,6 +56,7 @@ export const tableHeader = [
       flex: 0.5,
     },
     Cell: ({ row }) => {
+      console.log(row.original);
       return <TableCellCount {...row.original} />;
     },
   },
