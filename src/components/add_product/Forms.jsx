@@ -65,7 +65,7 @@ const Forms = () => {
 
   useEffect(() => {
     validationHandler(values.categoryId, setKeys, setValues, values);
-  }, [values.categoryId]);
+  }, [values?.categoryId]);
 
   useEffect(() => {
     catchErrorValidationHandler(errors);

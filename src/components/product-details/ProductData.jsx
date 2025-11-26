@@ -2,12 +2,12 @@ import { Box, styled } from "@mui/material";
 import React, { useMemo } from "react";
 
 const ProductData = ({ product }) => {
-  const characteristics = product.characteristics;
+  const characteristics = product?.characteristics;
 
   console.log(characteristics, product, "test");
 
   const productCategoria = useMemo(() => {
-    switch (product.category) {
+    switch (product?.category) {
       case "Laptops":
         return (
           <Styled_Product>

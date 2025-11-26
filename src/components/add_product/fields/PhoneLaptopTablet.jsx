@@ -55,7 +55,7 @@ const PhoneLaptopTablet = ({
             const newData = {
               ...subproduct,
               characteristics: {
-                ...findedSubProductData.characteristics,
+                ...findedSubProductData?.characteristics,
                 [e.target.name]: e.target.value,
               },
             };
@@ -65,7 +65,7 @@ const PhoneLaptopTablet = ({
         })
       );
     },
-    [values.subproducts, findedSubProductData.characteristics]
+    [values.subproducts, findedSubProductData?.characteristics]
   );
 
   if (!values) {
@@ -88,15 +88,15 @@ const PhoneLaptopTablet = ({
               <Select
                 onChange={changeCharacteristicsHandler}
                 name={content.key}
-                value={findedSubProductData.characteristics[content.key] || ""}
+                value={findedSubProductData?.characteristics[content.key] || ""}
                 displayEmpty
                 IconComponent={() => <ArrowDownIcon width={18} height={18} />}
                 input={<Input error={isCharacteristics[content.key]} />}
                 renderValue={() => (
                   <>
-                    {findedSubProductData.characteristics[content.key] ? (
+                    {findedSubProductData?.characteristics[content.key] ? (
                       <Typography variant="body1" component="span">
-                        {findedSubProductData.characteristics[content.key]}
+                        {findedSubProductData?.characteristics[content.key]}
                       </Typography>
                     ) : (
                       <Typography
