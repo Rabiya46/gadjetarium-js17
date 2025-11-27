@@ -19,6 +19,8 @@ const MainProductDetails = () => {
 
   const { product } = useParams();
 
+  console.log(product);
+
   useEffect(() => {
     dispatch(getProductDetailThunk({ product }));
   }, [dispatch, product]);
