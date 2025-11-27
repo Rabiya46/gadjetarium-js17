@@ -60,7 +60,7 @@ export const putAddFeedback = createAsyncThunk(
 export const deletetFeedback = createAsyncThunk(
   "addFeedbackSlice/deletetFeedback",
   async ({ reviewid, product }, { rejectWithValue, dispatch }) => {
-    console.log(reviewid);
+    // console.log(reviewid);
     try {
       const response = await axiosInstance.delete(`users/review`, {
         params: { review: reviewid },

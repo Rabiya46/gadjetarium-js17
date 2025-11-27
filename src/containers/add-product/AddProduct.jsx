@@ -32,7 +32,7 @@ const AddProduct = () => {
     values: AllValues,
   } = useSelector((state) => state.addProduct);
 
-  console.log(AllValues);
+  // console.log(AllValues);
 
   const { values, handleSubmit, setValues, errors } = useFormik({
     initialValues: PRODUCT_INITIALSTATE,

@@ -15,7 +15,7 @@ const AdminProductDetails = ({ data, count }) => {
   const basketData = useSelector((state) => state.basket.data);
   const dispatch = useDispatch();
 
-  console.log(data, "test");
+  // // console.log(data, "test");
 
   // Устанавливаем данные продукта в Redux (если нужно)
   useEffect(() => {
@@ -95,7 +95,6 @@ const AdminProductDetails = ({ data, count }) => {
                     </span>
                   </Grid>
                 </Grid>
-
                 <Grid container className="colors">
                   <Box
                     container
@@ -171,7 +170,6 @@ const AdminProductDetails = ({ data, count }) => {
                     </div>
                   </Grid>
                 </Grid>
-
                 <ProductData product={data} />
               </Styled_Block>
             </Grid>

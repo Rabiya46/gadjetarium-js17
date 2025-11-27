@@ -12,7 +12,7 @@ const PriceQuantity = () => {
     (state) => state.addProduct
   );
 
-  console.log(editData, addProductFirstPart, values);
+  // console.log(editData, addProductFirstPart, values);
 
   const [value, setValue] = useState(editData[editData.isChecked]);
   const dispatch = useDispatch();

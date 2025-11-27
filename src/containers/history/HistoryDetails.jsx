@@ -8,7 +8,7 @@ import HistoryCard from "./HistoryCard";
 const HistoryDetails = () => {
   const dispatch = useDispatch();
   const { dataDetails, status } = useSelector((state) => state.private.details);
-  console.log(dataDetails);
+  // console.log(dataDetails);
   const { id } = useParams();
 
   useEffect(() => {

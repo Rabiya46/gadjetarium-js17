@@ -20,7 +20,7 @@ const DescriptionOverview = () => {
     errors,
   } = useSelector((state) => state.addProduct);
 
-  console.log(values);
+  // console.log/(values);
 
   const dispatch = useDispatch();
 

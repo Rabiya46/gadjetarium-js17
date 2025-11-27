@@ -20,7 +20,7 @@ const MainProductDetails = () => {
   const { product } = useParams();
 
   useEffect(() => {
-    dispatch(getProductDetailThunk({ product: data.id }));
+    dispatch(getProductDetailThunk({ product }));
   }, [dispatch, product]);
 
   if (!data) {

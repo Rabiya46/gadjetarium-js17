@@ -34,7 +34,7 @@ const CatalogProducts = () => {
     (state) => state.catalog
   );
 
-  console.log(data);
+  // console.log(data);
 
   const dispatch = useDispatch();
 

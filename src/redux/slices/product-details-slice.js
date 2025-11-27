@@ -5,16 +5,7 @@ export const getProductDetailThunk = createAsyncThunk(
   "productDetail/getProductDetailThunk",
   async ({ id }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(
-        `/api/subproducts/${id}`
-        // {
-        //   params: {
-        //     id: data.product,
-        //     attribute: data.attribute,
-        //     size: data.size,
-        //   },
-        // }
-      );
+      const response = await axiosInstance.get(`/api/subproducts/${id}`);
 
       return response.data;
     } catch (error) {
