@@ -57,7 +57,7 @@ export const fetchDataSignup = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.response.data.password || error.response.data.message) {
         toast.error(
           error.response.data.message || error.response.data.password
@@ -184,7 +184,7 @@ const authenticationSlice = createSlice({
       .addCase(authWithGoogle.fulfilled, (state, action) => {
         const { email, role, token } = action.payload;
         if (email && role && token) {
-          console.log(action);
+          // console.log(action);
           localStorage.setItem(
             GADJEDTARIUM_LOGIN_INFO,
             JSON.stringify(action.payload)

@@ -82,7 +82,7 @@ const deleteOrderProducts = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error?.response?.data?.message);
       throw new Error();
     }

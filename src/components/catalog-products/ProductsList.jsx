@@ -15,7 +15,7 @@ const ProductsList = ({
 }) => {
   const { size } = useSelector((state) => state.filteredCatalog);
 
-  console.log(data);
+  // console.log(data);
 
   const dispatch = useDispatch();
 

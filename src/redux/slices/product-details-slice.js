@@ -7,13 +7,6 @@ export const getProductDetailThunk = createAsyncThunk(
     try {
       const response = await axiosInstance.get(
         `/api/subproducts/${data.product}`
-        // {
-        //   params: {
-        //     id: data.product,
-        //     attribute: data.attribute,
-        //     size: data.size,
-        //   },
-        // }
       );
 
       return response.data;

@@ -25,7 +25,7 @@ const FunctionalIconsItemTooltipTitle = ({
     (state) => state.compareProducts
   );
 
-  console.log(title);
+  // // console.log(title);
 
   const bData = Array.isArray(basketData) ? basketData : [];
   const fData = Array.isArray(favoriteData) ? favoriteData : [];

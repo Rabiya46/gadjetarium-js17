@@ -1,382 +1,350 @@
-import { styled, Rating, Box, Typography, Grid } from "@mui/material";
-import ImgSlider from "../../components/UI/ImgSlider";
-import IconButton from "./../../components/UI/IconButton";
-import { CartIcon, HeartActiveIcon, Favorites } from "../../assets";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ActionProductDetails } from "../../redux/slices/product-details-slice";
-import ChooseColor from "../../components/UI/ChooseColor";
-import ProductData from "../../components/product-details/ProductData";
-import { getDicountPrice } from "./../../utils/helpers/get-discount-price";
-import { postProductToBasket } from "../../redux/slices/basket-slice";
-import PopUp from "../../components/UI/PopUp";
-import { postFavoriteProducts } from "../../redux/slices/favorite-slice";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  Rating,
+  Button,
+  IconButton,
+  Paper,
+  Divider,
+  styled,
+} from "@mui/material";
+import {
+  Favorite,
+  FavoriteBorder,
+  ShoppingCart,
+  Remove,
+  Add,
+} from "@mui/icons-material";
 
-const ProductDetails = ({ data, chooseItem, count, images }) => {
-  const { subproducts = [] } = data;
+const StyledContainer = styled(Box)(() => ({
+  minHeight: "100vh",
+  boxShadow: "none !important",
+  // padding: theme.spacing(3),
+}));
 
-  const { catalogItem, product } = useParams();
+const StyledPaper = styled(Paper)(() => ({
+  // maxWidth: "1400px",
+  boxShadow: "none !important",
+  margin: "0 auto",
+  background: "#f4f4f4",
+  // overflow: "hidden",
+}));
 
-  const [text, setText] = useState(["", "", ""]);
+const ImageContainer = styled(Box)(() => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  // borderRadius: theme.spacing(1),
+  // padding: theme.spacing(4),
+  "& img": {
+    maxWidth: "100%",
+    height: "auto",
+    // borderRadius: theme.spacing(1),
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    objectFit: "contain",
+    maxHeight: "400px",
+  },
+}));
 
-  const [dropDown, setDropDown] = useState(false);
+const DiscountBadge = styled(Box)(() => ({
+  backgroundColor: "#f44336",
+  color: "white",
+  borderRadius: "50%",
+  width: "56px",
+  height: "56px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: "bold",
+  fontSize: "14px",
+}));
 
-  const basketData = useSelector((state) => state.basket.data);
+const CounterButton = styled(IconButton)(() => ({
+  border: "2px solid #f4f4f4",
+  borderRadius: "50%",
+  width: "40px",
+  height: "40px",
+  "&:hover": {
+    backgroundColor: "#292929",
+    color: "white",
+    borderColor: "#292929",
+  },
+  "&:disabled": {
+    opacity: 0.5,
+  },
+}));
 
-  const dispatch = useDispatch();
+const ColorBox = styled(Box)(() => ({
+  // padding: theme.spacing(1, 2),
+  // backgroundColor: "#e0e0e0",
+  // borderRadius: theme.spacing(1),
+  fontWeight: 500,
+}));
 
-  const findedSubProduct = useMemo(() => {
-    return subproducts.find((product) => product.id === chooseItem);
-  }, [chooseItem]);
+const CharacteristicsBox = styled(Box)(() => ({
+  // backgroundColor: "#f9f9f9",
+  // borderRadius: theme.spacing(1),
+  // padding: theme.spacing(2),
+}));
 
-  const chooseColorHandler = (colorId, images) => {
-    dispatch(ActionProductDetails.setChooseItem(colorId));
-    dispatch(ActionProductDetails.addImages(images));
-  };
+const PriceContainer = styled(Box)(() => ({
+  // backgroundColor: "#f9f9f9",
+  // borderRadius: theme.spacing(1),/
+  // padding: theme.spacing(3),/
+}));
 
-  useEffect(() => {
-    dispatch(ActionProductDetails.addImages(subproducts[0]?.images));
-    dispatch(ActionProductDetails.setChooseItem(subproducts[0]?.id));
-  }, [data?.subproducts]);
+const ProductDetails = ({ data }) => {
+  const [count, setCount] = useState(1);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  useEffect(() => {
-    dispatch(ActionProductDetails.setDetails(findedSubProduct));
-  }, [findedSubProduct]);
-
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+  // const data = {
+  //   id: 3,
+  //   brandName: "Xiaomi",
+  //   images: ["https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f"],
+  //   name: "Mi Pad 5",
+  //   count: 40,
+  //   article: 100003,
+  //   rating: 3.0,
+  //   currentColor: "Gray",
+  //   price: 50000.0,
+  //   discount: 15.0,
+  //   priceAfterDiscount: 42500.0,
+  //   characteristics: {
+  //     "Screen Size": "10.1 inch",
+  //     Battery: "8000mAh",
+  //     RAM: "8 GB",
+  //   },
+  //   category: "Tablets",
+  //   isFavorite: false,
+  //   isInComparison: false,
+  // };
 
   const plusHandler = () => {
-    dispatch(ActionProductDetails.plusCount());
-  };
-  const minusHandler = () => {
-    dispatch(ActionProductDetails.minusCount());
-  };
-
-  const onClickCartHandler = () => {
-    if (basketData?.some((item) => item.id === findedSubProduct.id)) {
-      alert("Товар уже добавлен!");
-    } else {
-      dispatch(
-        postProductToBasket({
-          orderCount: count,
-          productId: findedSubProduct.id,
-        })
-      ).then(() => {
-        setText([
-          "Товар успешно добавлен в корзину!",
-          "Перейти в корзину",
-          "/cart",
-        ]);
-        setDropDown(true);
-      });
+    if (count < data.count) {
+      setCount(count + 1);
     }
   };
-  const closeDropDown = () => {
-    setDropDown(false);
+
+  const minusHandler = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
   };
 
-  const attribute = location.pathname
-    .split(`/item/${catalogItem}/${product}/`)
-    .join("");
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
-  const addToFavoriteHandler = () => {
-    dispatch(postFavoriteProducts({ productId: data.id, attribute })).then(
-      () => {
-        data.favorite
-          ? setText([
-              "Товар удалён из избранных!",
-              "Перейти в избранное",
-              "/favorite",
-            ])
-          : setText([
-              "Товар добавлен в избранное!",
-              "Перейти в избранное",
-              "/favorite",
-            ]);
-
-        setDropDown(true);
-      }
-    );
+  const addToCart = () => {
+    alert(`Добавлено в корзину: ${count} шт.`);
   };
 
   return (
-    <>
-      <PopUp
-        open={dropDown}
-        handleClose={closeDropDown}
-        addedTitle={text[0]}
-        transitionTitle={text[1]}
-        to={text[2]}
-        durationSnackbar={2000}
-        icon={true}
-        vertical="top"
-        horizontal="right"
-      />
-
-      <Styled_Container>
-        <Grid container>
-          <Grid className="logo" item xs={12}>
-            <h1>{data.subCategoryName}</h1>
-          </Grid>
-          <Grid container className="paddingTop">
-            <Grid item xs={6}>
-              <ImgSlider images={images} />
+    <StyledContainer>
+      <StyledPaper elevation={3}>
+        <Box sx={{ p: 4 }}>
+          <Grid container spacing={4}>
+            {/* Image Section */}
+            <Grid item xs={12} lg={6}>
+              <ImageContainer>
+                <img src={data.images[0]} alt={data.name} />
+              </ImageContainer>
             </Grid>
 
-            <Grid item xs={6} className="content">
-              <Styled_Block>
-                <Grid container className="type">
-                  <Grid item xs={12}>
-                    <Typography variant="h4">{data.productName}</Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <span className="green">
-                      в наличии (
-                      {findedSubProduct?.countOfSubproduct.toString()}
-                      шт)
-                    </span>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <span>Артикул: {data?.productVendorCode?.toString()}</span>
+            {/* Details Section */}
+            <Grid item xs={12} lg={6}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                {/* Product Title */}
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 2 }}>
+                    {data.brandName} {data.name}
+                  </Typography>
+                  <Box
+                    sx={{ display: "flex", gap: 3, mb: 1, flexWrap: "wrap" }}
+                  >
+                    <Typography sx={{ color: "#4caf50", fontWeight: 600 }}>
+                      В наличии ({data.count} шт)
+                    </Typography>
+                    <Typography sx={{ color: "#757575" }}>
+                      Артикул: {data.article}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Rating
+                      value={data.rating}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                    />
+                    <Typography variant="body2" sx={{ color: "#757575" }}>
+                      ({data.rating.toFixed(1)})
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Divider />
+
+                {/* Color and Quantity */}
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography
+                      sx={{ fontWeight: 600, mb: 1.5, color: "#424242" }}
+                    >
+                      Цвет товара:
+                    </Typography>
+                    <ColorBox>
+                      <Typography>{data.currentColor}</Typography>
+                    </ColorBox>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <span className="flex grey">
-                      <Rating
+                  <Grid item xs={12} sm={6}>
+                    <Typography
+                      sx={{ fontWeight: 600, mb: 1.5, color: "#424242" }}
+                    >
+                      Количество:
+                    </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <CounterButton
+                        onClick={minusHandler}
+                        disabled={count === 1}
                         size="small"
-                        readOnly
-                        value={data?.productRating || 0}
-                      />
-                      ({data?.countOfReviews})
-                    </span>
-                  </Grid>
-                </Grid>
-
-                <Grid container className="colors">
-                  <Grid item xs={12} className="flex data">
-                    <Container_Color>
-                      <p>Цвет товара:</p>
-                      <Stled_Box>
-                        {subproducts?.map((item) => (
-                          <Box
-                            key={item.id}
-                            onClick={() =>
-                              chooseColorHandler(item.id, item.images)
-                            }
-                          >
-                            <ChooseColor
-                              key={item.id}
-                              checked={item.id}
-                              choosed={chooseItem}
-                              color={item?.colorName}
-                            />
-                          </Box>
-                        ))}
-                      </Stled_Box>
-                    </Container_Color>
-                    <Grid container className="text-center count">
-                      <Grid item xs={12} className="btn">
-                        <p>Количество:</p>
-                      </Grid>
-                      <Grid item xs={5}>
-                        <Styled_Button
-                          onClick={minusHandler}
-                          disabled={count === 1}
-                        >
-                          -
-                        </Styled_Button>
-                      </Grid>
-                      <Grid item xs={2}>
+                      >
+                        <Remove />
+                      </CounterButton>
+                      <Typography
+                        variant="h6"
+                        sx={{ minWidth: 40, textAlign: "center" }}
+                      >
                         {count}
-                      </Grid>
-                      <Grid item xs={5}>
-                        <Styled_Button onClick={plusHandler}>+</Styled_Button>
-                      </Grid>
-                    </Grid>
-
-                    <Grid item xs={5} className="center">
-                      <div>
-                        {data.discount > 0 ? (
-                          <Styled_Price>
-                            <Discount_Styled>-{data.discount}%</Discount_Styled>
-                            <Discount_Price>
-                              {findedSubProduct?.price.toString()}c
-                            </Discount_Price>
-                            <Price>
-                              {getDicountPrice(
-                                data.discount,
-                                findedSubProduct?.price.toString()
-                              )}
-                            </Price>
-                          </Styled_Price>
-                        ) : (
-                          <Styled_Price>
-                            <Discount_Price>
-                              {findedSubProduct?.price.toString()}c
-                            </Discount_Price>
-                          </Styled_Price>
-                        )}
-
-                        <div className="between">
-                          <Component_Button
-                            variant="outlined"
-                            onClick={addToFavoriteHandler}
-                          >
-                            {data.favorite ? (
-                              <HeartActiveIcon />
-                            ) : (
-                              <Favorites />
-                            )}
-                          </Component_Button>
-                          <IconButton
-                            onClick={onClickCartHandler}
-                            width="195px"
-                            icon={<CartIcon />}
-                          >
-                            В корзину
-                          </IconButton>
-                        </div>
-                      </div>
-                    </Grid>
+                      </Typography>
+                      <CounterButton
+                        onClick={plusHandler}
+                        disabled={count >= data.count}
+                        size="small"
+                      >
+                        <Add />
+                      </CounterButton>
+                    </Box>
                   </Grid>
                 </Grid>
-                <ProductData subproducts={findedSubProduct} productId={data} />
-              </Styled_Block>
+
+                {/* Characteristics */}
+                <Box>
+                  <Typography
+                    sx={{ fontWeight: 600, mb: 1.5, color: "#424242" }}
+                  >
+                    Характеристики:
+                  </Typography>
+                  <CharacteristicsBox>
+                    {Object.entries(data.characteristics).map(
+                      ([key, value]) => (
+                        <Box
+                          key={key}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            py: 1,
+                            "&:not(:last-child)": {
+                              borderBottom: "1px solid #e0e0e0",
+                            },
+                          }}
+                        >
+                          <Typography sx={{ color: "#757575" }}>
+                            {key}:
+                          </Typography>
+                          <Typography sx={{ fontWeight: 500 }}>
+                            {value}
+                          </Typography>
+                        </Box>
+                      )
+                    )}
+                  </CharacteristicsBox>
+                </Box>
+
+                {/* Price and Actions */}
+                <PriceContainer>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 2,
+                      mb: 3,
+                      pb: 3,
+                      borderBottom: "1px solid #e0e0e0",
+                    }}
+                  >
+                    {data.discount > 0 && (
+                      <DiscountBadge>-{data.discount}%</DiscountBadge>
+                    )}
+                    <Box sx={{ textAlign: "center" }}>
+                      <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                        {data.priceAfterDiscount.toLocaleString()} с
+                      </Typography>
+                      {data.discount > 0 && (
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            color: "#9e9e9e",
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {data.price.toLocaleString()} с
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: 2 }}>
+                    <IconButton
+                      onClick={toggleFavorite}
+                      sx={{
+                        border: "2px solid #e0e0e0",
+                        borderRadius: 1,
+                        width: 56,
+                        height: 56,
+                        "&:hover": {
+                          borderColor: "#f44336",
+                          backgroundColor: "#ffebee",
+                        },
+                      }}
+                    >
+                      {isFavorite ? (
+                        <Favorite sx={{ color: "#f44336" }} />
+                      ) : (
+                        <FavoriteBorder sx={{ color: "#9e9e9e" }} />
+                      )}
+                    </IconButton>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<ShoppingCart />}
+                      onClick={addToCart}
+                      sx={{
+                        backgroundColor: "#1976d2",
+                        py: 2,
+                        fontWeight: 600,
+                        fontSize: "16px",
+                        boxShadow: 2,
+                        "&:hover": {
+                          backgroundColor: "#1565c0",
+                          boxShadow: 4,
+                        },
+                      }}
+                    >
+                      В корзину
+                    </Button>
+                  </Box>
+                </PriceContainer>
+              </Box>
             </Grid>
           </Grid>
-        </Grid>
-      </Styled_Container>
-    </>
+        </Box>
+      </StyledPaper>
+    </StyledContainer>
   );
 };
 
 export default ProductDetails;
-const Styled_Container = styled("div")(() => ({
-  minHeight: "500px",
-  "& p": {
-    fontFamily: "Inter",
-    fontStyle: "normal",
-    fontWeight: 700,
-    fontSize: "16px",
-  },
-  "& .paddingTop": {
-    paddingTop: "60px",
-  },
-
-  "& .logo": {
-    width: "100%",
-    height: "70px",
-    borderBottom: "  1px  solid grey",
-    display: "flex",
-    alignItems: "center",
-    "& h1": {
-      color: "darkblue",
-      textTransform: "uppercase",
-    },
-    "& .content": {
-      width: "100%",
-      display: "flex",
-      "& h4": {
-        fontFamily: "Ubuntu",
-        fontStyle: "normal",
-        fontWeight: "500",
-        fontSize: "30px",
-      },
-    },
-  },
-  "& .colors": {
-    paddingTop: "30px",
-  },
-  "& .count": {
-    width: "102px",
-    margin: "0 auto",
-    height: "100%",
-    alignItems: "flex-start",
-  },
-}));
-
-const Styled_Block = styled("div")(() => ({
-  "& .type": {
-    height: "80px",
-    borderBottom: "  1px  solid grey",
-  },
-  "& .green": {
-    color: "#2FC509",
-  },
-  "& .grey": {
-    color: "grey",
-  },
-}));
-const Styled_Price = styled("div")(() => ({
-  display: "flex",
-  justifyContent: "space-evenly",
-  alignItems: "center",
-  height: "100%",
-  borderBottom: "1px solid grey",
-  marginBottom: "20px",
-  paddingBottom: "10px",
-}));
-
-const Discount_Price = styled("span")(() => ({
-  fontFamily: "Inter",
-  fontStyle: "normal",
-  fontWeight: 700,
-  fontSize: "20px",
-  alignItems: "center",
-}));
-
-const Price = styled("span")(() => ({
-  fontSize: "16px",
-  color: "grey",
-  textAlign: "center",
-  textDecoration: "line-through",
-}));
-
-const Container_Color = styled(Box)(() => ({
-  height: "100%",
-  width: "150px",
-}));
-const Stled_Box = styled(Box)(() => ({
-  display: "flex",
-  width: "178px",
-  gap: 10,
-  paddingTop: "20px",
-}));
-const Discount_Styled = styled("div")(() => ({
-  color: "white",
-  width: "2vw",
-  height: "2vw",
-  fontWeight: "900",
-  borderRadius: "50%",
-  background: "red",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "0.5rem",
-}));
-const Styled_Button = styled("button")(() => ({
-  width: "30px",
-  height: "30px",
-  borderRadius: "50%",
-  cursor: "pointer",
-  border: "1px solid grey",
-
-  "&:hover": {
-    background: "#292929",
-    color: "white",
-  },
-}));
-
-const Component_Button = styled("div")(() => ({
-  width: "65px",
-  border: "1px solid grey",
-  borderRadius: "5px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-  marginRight: "10px",
-}));

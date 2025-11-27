@@ -1,3 +1,3 @@
-export const SWAGGER_API = "http://18.185.68.133";
+export const SWAGGER_API = "http://18.199.149.187";
 
 export const GADJEDTARIUM_LOGIN_INFO = "GADJEDTARIUM_LOGIN_INFO";

@@ -10,7 +10,7 @@ const DescriptionTabItem = () => {
 
   const { data } = useSelector((state) => state.adminProductDetails);
 
-  console.log(product, data);
+  // console.log(product, data);
 
   const dispatch = useDispatch();
 

@@ -7,7 +7,7 @@ const SubcategoryName = ({
   handleToggle,
   subCategoryNames = [],
 }) => {
-  console.log(subCategoryNames);
+  // // console.log(subCategoryNames);
   return (
     <Box key={id} className="subcategory-box">
       <FormControlLabel

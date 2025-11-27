@@ -13,7 +13,7 @@ const Goods = () => {
 
   const dispatch = useDispatch();
 
-  console.log(params);
+  // console.log(params);
 
   useEffect(() => {
     dispatch(getProductsThunk(params));

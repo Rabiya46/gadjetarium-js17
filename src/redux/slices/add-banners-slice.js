@@ -12,7 +12,7 @@ export const postBannerImagesThunk = createAsyncThunk(
   "postBannerImagesThunk/addBannerImageSlice",
   async (images) => {
     try {
-      console.log(images);
+      // console.log(images);
       const response = await axiosInstance.post("/api/banners", images);
       const responseData = {
         data: response.data,
