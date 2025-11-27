@@ -42,8 +42,11 @@ const AdminRoutes = () => {
           </Suspense>
         }
       >
+        {/* Главная админка */}
         <Route path="/" element={<Admin />}>
           <Route index element={<Navigate to={ROUTES.GOODS} />} />
+
+          {/* GOODS */}
           <Route
             path="goods"
             element={
@@ -52,18 +55,57 @@ const AdminRoutes = () => {
               </Suspense>
             }
           >
+            {/* Таблица подпродуктов */}
             <Route
-              path="product/:productId"
+              path="product/:product/subproducts"
               element={
                 <Suspense fallback={<GadgetariumSpinnerLoading />}>
                   <InnerGoods />
                 </Suspense>
               }
             />
+
+            {/* Детали субпродукта */}
+            <Route
+              path="product/:product/subproducts/:id"
+              element={
+                <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                  <MainProductDetails />
+                </Suspense>
+              }
+            >
+              <Route
+                path="description"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <DescriptionTabItem />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="characteristics"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <CharacteristicsTabItem />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="reviews"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <ReviewsTabItem />
+                  </Suspense>
+                }
+              />
+            </Route>
           </Route>
 
+          {/* ORDERS */}
           <Route
-            path={`${ROUTES.ORDERS}`}
+            path={ROUTES.ORDERS}
             element={
               <Suspense fallback={<GadgetariumSpinnerLoading />}>
                 <Orders />
@@ -79,8 +121,9 @@ const AdminRoutes = () => {
             }
           />
 
+          {/* REVIEWS & RATING */}
           <Route
-            path={`${ROUTES.REVIEWSRATING}`}
+            path={ROUTES.REVIEWSRATING}
             element={
               <Suspense fallback={<GadgetariumSpinnerLoading />}>
                 <ReviewRating />
@@ -88,41 +131,8 @@ const AdminRoutes = () => {
             }
           />
         </Route>
-        <Route
-          path={`goods/product/:productId/subproduct/:subId`}
-          element={
-            <Suspense fallback={<GadgetariumSpinnerLoading />}>
-              <MainProductDetails />
-            </Suspense>
-          }
-        >
-          <Route
-            path="description"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <DescriptionTabItem />
-              </Suspense>
-            }
-          />
-          <Route
-            path="characteristics"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <CharacteristicsTabItem />
-              </Suspense>
-            }
-          />
 
-          <Route
-            path="reviews"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <ReviewsTabItem />
-              </Suspense>
-            }
-          />
-        </Route>
-
+        {/* ADD PRODUCT */}
         <Route
           path={`${ROUTES.GOODS}/${ROUTES.ADDPRODUCT}`}
           element={
@@ -139,6 +149,7 @@ const AdminRoutes = () => {
               </Suspense>
             }
           />
+
           <Route
             path="part-2"
             element={
@@ -147,6 +158,7 @@ const AdminRoutes = () => {
               </Suspense>
             }
           />
+
           <Route
             path="part-3"
             element={

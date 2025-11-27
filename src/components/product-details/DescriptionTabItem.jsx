@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductDetailThunk } from "../../redux/slices/product-details-slice";
 import { Box, styled } from "@mui/material";
 import ReactPlayer from "react-player";
+
 const DescriptionTabItem = () => {
   const { product } = useParams();
 
-  const { data } = useSelector((state) => state.productDetails);
+  const { description } = useSelector((state) => state.adminProductDetails);
 
   const dispatch = useDispatch();
 
@@ -18,7 +19,7 @@ const DescriptionTabItem = () => {
   return (
     <Styled_Wrapper>
       <ReactPlayer
-        url={data.videoReview}
+        url={description.video}
         config={{ youtube: { playerVars: { showinfo: 1 } } }}
         controls
         width="100%"
@@ -26,7 +27,7 @@ const DescriptionTabItem = () => {
       />
       <div
         className="description"
-        dangerouslySetInnerHTML={{ __html: data?.attribute?.Описание }}
+        dangerouslySetInnerHTML={{ __html: description.description }}
       />
     </Styled_Wrapper>
   );

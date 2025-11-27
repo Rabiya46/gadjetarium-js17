@@ -3,10 +3,10 @@ import axiosInstance from "../../config/axios-instance";
 
 export const getProductDetailThunk = createAsyncThunk(
   "productDetail/getProductDetailThunk",
-  async (data, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(
-        `/api/subproducts/${data.product}`
+        `/api/subproducts/${id}`
         // {
         //   params: {
         //     id: data.product,

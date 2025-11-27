@@ -8,16 +8,14 @@ import SubproductContentTable from "../../components/goods-cmp/content-table-sub
 const InnerGoods = () => {
   const { params } = useSelector((state) => state.goods);
 
-  const id = useParams();
-
-  console.log(id);
+  const { product } = useParams();
 
   const dispatch = useDispatch();
 
   console.log(params);
 
   useEffect(() => {
-    dispatch(getProductsBySubproductsThunk(id));
+    dispatch(getProductsBySubproductsThunk(product));
   }, []);
 
   return (

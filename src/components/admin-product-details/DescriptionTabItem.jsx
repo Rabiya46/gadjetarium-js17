@@ -4,31 +4,34 @@ import { useParams } from "react-router-dom";
 import { getProductDetailThunk } from "../../redux/slices/product-details-slice";
 import { Box, styled } from "@mui/material";
 import ReactPlayer from "react-player";
+import { getSubproductDescriptionThunk } from "../../redux/slices/admin-product-details-slice";
 
 const DescriptionTabItem = () => {
-  const { product } = useParams();
+  const { id } = useParams();
 
-  const { data } = useSelector((state) => state.adminProductDetails);
-
-  console.log(product, data);
+  const { description } = useSelector((state) => state.adminProductDetails);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductDetailThunk({ product }));
-  }, [dispatch, product]);
+    dispatch(getProductDetailThunk({ id }));
+    dispatch(getSubproductDescriptionThunk({ id }));
+  }, [dispatch, id]);
 
   return (
     <Styled_Wrapper>
       <ReactPlayer
-        url={data.videoReview}
+        url={description?.video}
         config={{ youtube: { playerVars: { showinfo: 1 } } }}
         controls
         width="100%"
         height="570px"
       />
 
-      <div className="description" dangerouslySetInnerHTML={{ __html: data }} />
+      <div
+        className="description"
+        dangerouslySetInnerHTML={{ __html: description?.description }}
+      />
     </Styled_Wrapper>
   );
 };
@@ -39,6 +42,7 @@ const Styled_Wrapper = styled(Box)(() => ({
   width: "90vw",
   height: "100%",
   padding: "60px 0",
+
   "& .description": {
     width: "60vw",
     padding: "50px 0",

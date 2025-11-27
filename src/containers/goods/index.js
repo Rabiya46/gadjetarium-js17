@@ -1,6 +1,6 @@
 import { Box, Container, Grid, styled } from "@mui/material";
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AddProductButton from "../../components/goods-cmp/buttons/AddProductButton";
 import ContentDatePicker from "../../components/goods-cmp/content-date-picker/ContentDatePicker";
@@ -12,25 +12,33 @@ import { getProductsThunk } from "../../redux/slices/goods-slice";
 const Goods = () => {
   const { params } = useSelector((state) => state.goods);
 
+  const { product } = useParams();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductsThunk(params));
-  }, [params]);
+    if (!product) {
+      dispatch(getProductsThunk(params));
+    }
+  }, [params, product]);
 
   return (
     <StyledGoods>
       <Container>
         <Grid container spacing={3} className="flex between">
-          <SearchItem />
+          {!product && (
+            <>
+              <SearchItem />
 
-          <AddProductButton />
+              <AddProductButton />
 
-          <ContentTab />
+              <ContentTab />
 
-          <ContentDatePicker />
+              <ContentDatePicker />
 
-          <ContentTable />
+              <ContentTable />
+            </>
+          )}
 
           <Outlet />
         </Grid>

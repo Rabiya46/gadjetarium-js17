@@ -8,10 +8,14 @@ import axiosInstance from "../../config/axios-instance";
 
 export default function Tabs({ tabs = [] }) {
   const [query, setQuery] = useState(tabs[0].param);
+
   const navigate = useNavigate();
+
   const location = useLocation();
 
   const { details } = useSelector((state) => state.productDetails);
+
+  console.log(details);
 
   useEffect(() => {
     const route =
@@ -27,16 +31,15 @@ export default function Tabs({ tabs = [] }) {
 
   const downloadPDFFileHandler = () => {
     axiosInstance
-      .get("pdf", {
+      .get(`/api/subproducts/${details.id}/description`, {
         responseType: "arraybuffer",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/pdf",
+          // Accept: "application/pdf",
         },
-        params: { subproductId: details.id },
       })
       .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const url = window.URL.createObjectURL(new Blob([response.data.file]));
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "file.pdf"); //or any other extension

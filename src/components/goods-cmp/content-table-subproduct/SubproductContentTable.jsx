@@ -1,4 +1,4 @@
-import { Box, Grid, styled } from "@mui/material";
+import { Container, Grid, styled } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ImageEmpty } from "../../../assets";
@@ -11,6 +11,8 @@ const SubproductContentTable = () => {
   const { dataSubproducts, choosedItems, params } = useSelector(
     (state) => state.goods
   );
+
+  console.log(dataSubproducts);
   // 👆 Добавили params
 
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const SubproductContentTable = () => {
   };
 
   useEffect(() => {
-    if (dataSubproducts?.products?.length) {
+    if (dataSubproducts?.length) {
       dispatch(
         actionGoodSlice.changeLocalParams({
           key: "chooseItem",
@@ -28,7 +30,7 @@ const SubproductContentTable = () => {
         })
       );
     }
-  }, [dataSubproducts.products]);
+  }, [dataSubproducts]);
 
   const handleChangePagination = (page) => {
     dispatch(actionGoodSlice.changeParams({ key: "page", value: page }));
@@ -38,8 +40,8 @@ const SubproductContentTable = () => {
     <Grid item xs={12}>
       <StyledContentTable>
         <StyledTable
-          countOfOrders={dataSubproducts.products?.length}
-          data={dataSubproducts.products}
+          countOfOrders={dataSubproducts?.length}
+          data={dataSubproducts}
           tableHeaderTitle={tableHeader}
           isMarked={true}
           found={true}
@@ -48,13 +50,11 @@ const SubproductContentTable = () => {
           isSort
         />
 
-        {!dataSubproducts.products?.length && (
-          <Image src={ImageEmpty} alt="empty" />
-        )}
+        {!dataSubproducts?.length && <Image src={ImageEmpty} alt="empty" />}
 
-        {dataSubproducts.totalElement > params.size && (
+        {dataSubproducts?.totalElement > params.size && (
           <Pagination
-            count={Math.ceil(dataSubproducts.totalElement / params.size)}
+            count={Math.ceil(dataSubproducts?.totalElement / params.size)}
             color="secondary"
             onChange={handleChangePagination}
           />
@@ -66,10 +66,12 @@ const SubproductContentTable = () => {
 
 export default SubproductContentTable;
 
-const StyledContentTable = styled(Box)(() => ({}));
+const StyledContentTable = styled(Container)(() => ({
+  width: "70vw",
+}));
 
 const StyledTable = styled(Table)(() => ({}));
 
 const Image = styled("img")(() => ({
-  paddingLeft: "20%",
+  //   paddingLeft: "20%",
 }));
