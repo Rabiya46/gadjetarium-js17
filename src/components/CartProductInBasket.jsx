@@ -49,7 +49,6 @@ const CartProductInBasket = ({
               <p>{memoryOfPhone}gb</p>
               <p> {color.toLowerCase()}</p>
             </NameProduct>
-
             <BoxRating>
               <TextRating>Рейтинг</TextRating>
 
@@ -59,12 +58,10 @@ const CartProductInBasket = ({
                 ({priceProductSeparate(Number(String(reviewCount || 0)))})
               </TextRating>
             </BoxRating>
-
             <TextInStock>
               В наличии (
               {priceProductSeparate(Number(String(availableCount || 0)))}шт)
             </TextInStock>
-
             <TextProductCode>
               Код товара: {priceProductSeparate(Number(String(code || 0)))}
             </TextProductCode>

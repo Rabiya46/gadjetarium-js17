@@ -327,11 +327,9 @@ const ProductCard = (props) => {
 
       <Card_contend className="carsContent">
         <Styled_Count>В наличии ({count})</Styled_Count>
-
         <StyletTitle color="black" title={productName}>
           {productName}
         </StyletTitle>
-
         <Typography
           variant="span"
           className="flex size"
@@ -340,7 +338,6 @@ const ProductCard = (props) => {
           Рейтинг
           <Rating value={productRating} readOnly />({countOfReview})
         </Typography>
-
         <CardActions>
           <Grid container className="flex between">
             <Box width="35%" background="red">
