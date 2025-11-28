@@ -9,6 +9,7 @@ const getOrderProducts = createAsyncThunk(
       const response = await axiosInstance.get(`/api/orders`, {
         params,
       });
+
       return response.data;
     } catch (error) {
       throw new Error();
