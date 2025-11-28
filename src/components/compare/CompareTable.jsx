@@ -53,7 +53,7 @@ const CompareTable = ({ productTable, paramsCompare }) => {
                       <ColorName color={product.color} />
                     </TableCell>
                     <TableCell className="td_product">
-                      {product?.characteristics.memoryOfPhone} GB
+                      {product?.characteristics?.memoryOfPhone} GB
                     </TableCell>
                     <TableCell className="td_product">
                       {product?.characteristics.ramOfPhone}

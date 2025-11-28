@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -17,31 +16,29 @@ import {
   Remove,
   Add,
 } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { postFavoriteProducts } from "../../redux/slices/favorite-slice";
+import { postProductToBasket } from "../../redux/slices/basket-slice";
+import { useState } from "react";
 
 const StyledContainer = styled(Box)(() => ({
   minHeight: "100vh",
   boxShadow: "none !important",
-  // padding: theme.spacing(3),
 }));
 
 const StyledPaper = styled(Paper)(() => ({
-  // maxWidth: "1400px",
   boxShadow: "none !important",
   margin: "0 auto",
   background: "#f4f4f4",
-  // overflow: "hidden",
 }));
 
 const ImageContainer = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  // borderRadius: theme.spacing(1),
-  // padding: theme.spacing(4),
   "& img": {
     maxWidth: "100%",
     height: "auto",
-    // borderRadius: theme.spacing(1),
     boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
     objectFit: "contain",
     maxHeight: "400px",
@@ -77,52 +74,21 @@ const CounterButton = styled(IconButton)(() => ({
 }));
 
 const ColorBox = styled(Box)(() => ({
-  // padding: theme.spacing(1, 2),
-  // backgroundColor: "#e0e0e0",
-  // borderRadius: theme.spacing(1),
   fontWeight: 500,
+  display: "flex",
+  gap: "5px",
 }));
 
 const CharacteristicsBox = styled(Box)(() => ({
-  // backgroundColor: "#f9f9f9",
-  // borderRadius: theme.spacing(1),
-  // padding: theme.spacing(2),
-}));
-
-const PriceContainer = styled(Box)(() => ({
-  // backgroundColor: "#f9f9f9",
-  // borderRadius: theme.spacing(1),/
-  // padding: theme.spacing(3),/
+  backgroundColor: "#f9f9f9",
 }));
 
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  console.log(data);
-
-  // const data = {
-  //   id: 3,
-  //   brandName: "Xiaomi",
-  //   images: ["https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f"],
-  //   name: "Mi Pad 5",
-  //   count: 40,
-  //   article: 100003,
-  //   rating: 3.0,
-  //   currentColor: "Gray",
-  //   price: 50000.0,
-  //   discount: 15.0,
-  //   priceAfterDiscount: 42500.0,
-  //   characteristics: {
-  //     "Screen Size": "10.1 inch",
-  //     Battery: "8000mAh",
-  //     RAM: "8 GB",
-  //   },
-  //   category: "Tablets",
-  //   isFavorite: false,
-  //   isInComparison: false,
-  // };
-
+  const dispatch = useDispatch();
+  window.scrollTo({ top: 0 });
   const plusHandler = () => {
     if (count < data?.count) {
       setCount(count + 1);
@@ -135,12 +101,19 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const toggleFavorite = () => {
+  const toggleFavorite = (id) => {
     setIsFavorite(!isFavorite);
+    dispatch(postFavoriteProducts({ productId: id }));
   };
 
-  const addToCart = () => {
-    alert(`Добавлено в корзину: ${count} шт.`);
+  const addBasketHandler = (id) => {
+    dispatch(
+      postProductToBasket({
+        subproductId: id,
+      })
+    ).then(() => {
+      alert("Товар успешно добавлен в корзину!");
+    });
   };
 
   return (
@@ -181,7 +154,7 @@ const ProductDetails = ({ data }) => {
                       size="small"
                     />
                     <Typography variant="body2" sx={{ color: "#757575" }}>
-                      ({data?.rating.toFixed(1)})
+                      ({data?.rating?.toFixed(1)})
                     </Typography>
                   </Box>
                 </Box>
@@ -197,7 +170,15 @@ const ProductDetails = ({ data }) => {
                       Цвет товара:
                     </Typography>
                     <ColorBox>
-                      <Typography>{data.currentColor}</Typography>
+                      <div
+                        style={{
+                          backgroundColor: data?.currentColor,
+                          width: 24,
+                          height: 24,
+                          borderRadius: "5px",
+                        }}
+                      />
+                      <Typography>{data?.currentColor}</Typography>
                     </ColorBox>
                   </Grid>
 
@@ -223,7 +204,7 @@ const ProductDetails = ({ data }) => {
                       </Typography>
                       <CounterButton
                         onClick={plusHandler}
-                        disabled={count >= data.count}
+                        disabled={count >= data?.count}
                         size="small"
                       >
                         <Add />
@@ -240,7 +221,7 @@ const ProductDetails = ({ data }) => {
                     Характеристики:
                   </Typography>
                   <CharacteristicsBox>
-                    {Object.entries(data.characteristics).map(
+                    {Object.entries(data?.characteristics).map(
                       ([key, value]) => (
                         <Box
                           key={key}
@@ -266,7 +247,7 @@ const ProductDetails = ({ data }) => {
                 </Box>
 
                 {/* Price and Actions */}
-                <PriceContainer>
+                <Box>
                   <Box
                     sx={{
                       display: "flex",
@@ -278,14 +259,14 @@ const ProductDetails = ({ data }) => {
                       borderBottom: "1px solid #e0e0e0",
                     }}
                   >
-                    {data.discount > 0 && (
-                      <DiscountBadge>-{data.discount}%</DiscountBadge>
+                    {data?.discount > 0 && (
+                      <DiscountBadge>-{data?.discount}%</DiscountBadge>
                     )}
                     <Box sx={{ textAlign: "center" }}>
                       <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                        {data.priceAfterDiscount.toLocaleString()} с
+                        {data?.priceAfterDiscount?.toLocaleString()} с
                       </Typography>
-                      {data.discount > 0 && (
+                      {data?.discount > 0 && (
                         <Typography
                           variant="h6"
                           sx={{
@@ -293,7 +274,7 @@ const ProductDetails = ({ data }) => {
                             textDecoration: "line-through",
                           }}
                         >
-                          {data.price.toLocaleString()} с
+                          {data?.price.toLocaleString()} с
                         </Typography>
                       )}
                     </Box>
@@ -301,7 +282,7 @@ const ProductDetails = ({ data }) => {
 
                   <Box sx={{ display: "flex", gap: 2 }}>
                     <IconButton
-                      onClick={toggleFavorite}
+                      onClick={() => toggleFavorite(data?.id)}
                       sx={{
                         border: "2px solid #e0e0e0",
                         borderRadius: 1,
@@ -313,7 +294,7 @@ const ProductDetails = ({ data }) => {
                         },
                       }}
                     >
-                      {isFavorite ? (
+                      {data?.isFavorite ? (
                         <Favorite sx={{ color: "#f44336" }} />
                       ) : (
                         <FavoriteBorder sx={{ color: "#9e9e9e" }} />
@@ -323,15 +304,15 @@ const ProductDetails = ({ data }) => {
                       variant="contained"
                       fullWidth
                       startIcon={<ShoppingCart />}
-                      onClick={addToCart}
+                      onClick={() => addBasketHandler(data?.id)}
                       sx={{
-                        backgroundColor: "#1976d2",
+                        backgroundColor: "#e413c0",
                         py: 2,
                         fontWeight: 600,
                         fontSize: "16px",
                         boxShadow: 2,
                         "&:hover": {
-                          backgroundColor: "#1565c0",
+                          backgroundColor: "#bb109f",
                           boxShadow: 4,
                         },
                       }}
@@ -339,7 +320,7 @@ const ProductDetails = ({ data }) => {
                       В корзину
                     </Button>
                   </Box>
-                </PriceContainer>
+                </Box>
               </Box>
             </Grid>
           </Grid>

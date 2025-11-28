@@ -1,9 +1,9 @@
 import { Box, Container, styled, Typography, Checkbox } from "@mui/material";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { DeleteIconBasket, HeartIcon } from "../../assets";
+import { animateScroll as Scroll } from "react-scroll";
+import { DeleteIconBasket } from "../../assets";
 import BasketItem from "../../components/basket/BasketItem";
 import EmptyBasket from "../../components/basket/EmptyBasket";
 import GadgetariumSpinnerLoading from "../../components/GadgetariumSpinnerLoading";
@@ -13,110 +13,131 @@ import {
   ActionBasket,
   deleteProductBasket,
   getBasketProduct,
-  postProductToFavorite,
+  // postProductToFavorite,
+  getBasketInfographic, // Импортируем новый thunk
 } from "../../redux/slices/basket-slice";
 import { ROUTES } from "../../utils/constants/routes";
 import { priceProductSeparate } from "../../utils/helpers/general";
-import { animateScroll as Scroll } from "react-scroll";
 
 const Basket = () => {
-  const { data, isLoading } = useSelector((state) => state.basket);
-  const DATA = data || [];
-
+  const {
+    data = [],
+    isLoading,
+    infographic,
+  } = useSelector((state) => state.basket);
   const dispatch = useDispatch();
 
   const [allId, setAllId] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
-  const [sumOrderData, setSumOrderData] = useState([]);
-  const [text, setText] = useState("");
   const [dropDown, setDropDown] = useState(false);
 
+  // Инициализация данных
   useEffect(() => {
     Scroll.scrollTo(0);
-  }, []);
-
-  useEffect(() => {
-    setSumOrderData(
-      DATA.length > 0
-        ? DATA?.map((product) => ({
-            ...product,
-            productCount: 1,
-          }))
-        : []
-    );
-  }, [data]);
-
-  useEffect(() => {
     dispatch(getBasketProduct());
-  }, []);
+  }, [dispatch]);
 
-  const ID =
-    DATA.length > 0
-      ? DATA?.map((item) => {
-          return item.id;
-        })
-      : null;
+  // Обновление инфографики при изменении выбранных товаров
+  useEffect(() => {
+    if (allId.length > 0) {
+      dispatch(getBasketInfographic(allId));
+    }
+  }, [allId, dispatch]);
 
-  const getIdProducts = () => {
+  // Мемоизация ID продуктов
+  const productIds = useMemo(() => data.map((item) => item.id), [data]);
+
+  // Обработчик выбора всех товаров
+  const handleSelectAll = useCallback(() => {
     if (allId.length < 1) {
-      setAllId(ID);
-
+      setAllId(productIds);
       setAllChecked(true);
+      // Обновляем инфографику для всех товаров
+      if (productIds.length > 0) {
+        dispatch(getBasketInfographic(productIds));
+      }
     } else {
       setAllId([]);
-
       setAllChecked(false);
     }
-  };
+  }, [allId.length, productIds, dispatch]);
 
-  const closeDropDown = () => {
+  // Закрытие всплывающего окна
+  const closeDropDown = useCallback(() => {
     setDropDown(false);
-  };
+  }, []);
 
-  const onFavoriteAll = () => {
-    if (allId.length > 0) {
-      dispatch(postProductToFavorite(allId)).then(() => {
-        setText("Товары успешно добавлены в избранное!");
-        setDropDown(true);
-      });
-    } else {
-      alert("Выберите продукты!");
-    }
-  };
+  // Добавление всех выбранных товаров в избранное
+  // const handleFavoriteAll = useCallback(() => {
+  //   if (allId.length > 0) {
+  //     dispatch(postProductToFavorite(allId)).then(() => {
+  //       setDropDown(true);
+  //     });
+  //   } else {
+  //     alert("Выберите продукты!");
+  //   }
+  // }, [allId, dispatch]);
 
-  const onDeleteAll = () => {
+  // Удаление всех выбранных товаров
+  const handleDeleteAll = useCallback(() => {
     if (allId.length > 0) {
       dispatch(deleteProductBasket(allId));
+      setAllId([]);
+      setAllChecked(false);
     } else {
       alert("Выберите продукты!");
     }
-  };
+  }, [allId, dispatch]);
 
-  const orderCount = sumOrderData?.reduce((acc, curr) => {
-    return Number(acc) + Number(curr.orderCount) + curr.productCount - 1;
-  }, 0);
+  // Используем данные из инфографики или считаем локально
+  const orderSummary = useMemo(() => {
+    if (infographic && allId.length > 0) {
+      // Если есть данные инфографики, используем их
+      return {
+        orderCount: infographic.quantityOfProducts || 0,
+        price: infographic.totalPrice || 0,
+        discountAmount: infographic.totalDiscount || 0,
+        total: infographic.totalPriceWithDiscount || 0,
+      };
+    }
 
-  const discount = sumOrderData?.reduce((acc, curr) => {
-    return Number(acc) + Number(curr.amountOfDiscount);
-  }, 0);
+    // Иначе считаем по всем товарам в корзине
+    const orderCount = data.reduce((acc, item) => {
+      return acc + (item.selectedCount || 1);
+    }, 0);
 
-  const price = sumOrderData?.reduce((acc, current) => {
-    return acc + current.productCount * current.price;
-  }, 0);
+    const price = data.reduce((acc, item) => {
+      return (
+        acc +
+        (item.selectedCount || 1) * (item.priceAfterDiscount || item.price)
+      );
+    }, 0);
 
-  const skidka = price / discount;
-  const itogo = price - price / discount;
+    const discount = data.reduce((acc, item) => {
+      return acc + (item.amountOfDiscount || 0);
+    }, 0);
 
-  const addSumOrder = () => {
+    const total = price - discount;
+
+    return {
+      orderCount,
+      price,
+      discountAmount: discount,
+      total,
+    };
+  }, [infographic, allId, data]);
+
+  // Обработчик перехода к оформлению
+  const handleProceedToCheckout = useCallback(() => {
     dispatch(
       ActionBasket.addSumOrderData({
-        count: orderCount,
-        price: price,
-        discount: skidka,
-        total: itogo,
+        count: orderSummary.orderCount,
+        price: orderSummary.price,
+        discount: orderSummary.discountAmount,
+        total: orderSummary.total,
       })
     );
-  };
+  }, [dispatch, orderSummary]);
 
   return (
     <>
@@ -124,7 +145,7 @@ const Basket = () => {
         open={dropDown}
         handleClose={closeDropDown}
         transitionTitle="Перейти в корзину"
-        addedTitle={text}
+        addedTitle="Товары успешно добавлены в избранное!"
         durationSnackbar={2000}
         icon={true}
         vertical="bottom"
@@ -134,42 +155,39 @@ const Basket = () => {
 
       <MainContainer>
         <Typography className="title">Товары в корзине</Typography>
+
         {isLoading ? (
           <GadgetariumSpinnerLoading />
-        ) : DATA?.length < 1 ? (
+        ) : data.length < 1 ? (
           <EmptyBasket />
         ) : (
           <>
             <Box className="action-box">
-              <Box className="action" onClick={getIdProducts}>
+              <Box className="action" onClick={handleSelectAll}>
                 <Checkbox color="secondary" checked={allChecked} />
-
                 <Typography>Отметить всё</Typography>
               </Box>
 
-              <Box className="action dlt" onClick={onDeleteAll}>
+              <Box className="action dlt" onClick={handleDeleteAll}>
                 <DeleteIconBasket className="icon" />
-
                 <Typography>Удалить</Typography>
               </Box>
 
-              <Box className="action dlt" onClick={onFavoriteAll}>
+              {/* <Box className="action dlt" onClick={handleFavoriteAll}>
                 <HeartIcon className="heart" />
-
                 <Typography>Переместить в избранное</Typography>
-              </Box>
+              </Box> */}
             </Box>
 
             <Box className="container">
               <Box className="product-container">
-                {sumOrderData?.map((item, i) => (
-                  <Box key={i} className="product-box">
+                {data.map((item) => (
+                  <Box key={item.id} className="product-box">
                     <BasketItem
                       {...item}
                       allChecked={allChecked}
                       setAllId={setAllId}
                       allId={allId}
-                      setSumOrderData={setSumOrderData}
                     />
                   </Box>
                 ))}
@@ -185,22 +203,19 @@ const Basket = () => {
                     <Typography>Сумма:</Typography>
                     <Typography className="total">Итого</Typography>
                   </Box>
-
                   <Box>
-                    <Typography>{Math.round(orderCount || 0)} шт.</Typography>
+                    <Typography>{infographic?.count || 0} шт.</Typography>
                     <span className="discount">
                       <span>-</span>
                       <span>
                         {priceProductSeparate(
-                          Number(String(parseInt(skidka || 0)))
+                          parseInt(infographic?.discount || 0)
                         )}
                       </span>
                       <p>c</p>
                     </span>
                     <Typography className="sum" component="span" variant="span">
-                      {priceProductSeparate(
-                        Number(String(parseInt(price || 0)))
-                      )}
+                      {priceProductSeparate(parseInt(infographic?.sum || 0))}
                       <p>c</p>
                     </Typography>
                     <Typography
@@ -209,7 +224,7 @@ const Basket = () => {
                       variant="span"
                     >
                       {priceProductSeparate(
-                        Number(String(parseInt(itogo || 0)))
+                        parseInt(infographic?.totalPrice || 0)
                       )}
                       <p>c</p>
                     </Typography>
@@ -218,7 +233,7 @@ const Basket = () => {
 
                 <Link
                   to={`/${ROUTES.CART}/${ROUTES.ORDERING}`}
-                  onClick={addSumOrder}
+                  onClick={handleProceedToCheckout}
                 >
                   <StyledButton>Перейти к оформлению</StyledButton>
                 </Link>
