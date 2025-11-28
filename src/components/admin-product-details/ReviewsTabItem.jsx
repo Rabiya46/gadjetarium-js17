@@ -3,39 +3,49 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../UI/button/Button";
 import { useParams } from "react-router-dom";
-import { getProductRatingDetailThunk } from "../../redux/slices/product-details-slice";
+import {
+  getProductCommentsDetailThunk,
+  getProductRatingDetailThunk,
+} from "../../redux/slices/product-details-slice";
 import Feedback from "../UI/feedback/Feedback";
 import ReviewsTabSlice from "./ReviewsTabSlice";
 
 const ReviewsTabItem = () => {
-  const [reviewCount, setReviewCount] = useState(0);
+  // const [reviewCount, setReviewCount] = useState(0);
 
   const [isShowModal, setIsShowModal] = useState(false);
 
-  const { product } = useParams();
+  const { product, id } = useParams();
 
-  const { data } = useSelector((state) => state.adminProductDetails);
+  const { comments, rating } = useSelector((state) => state.productDetails);
+
+  console.log(comments);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductRatingDetailThunk({ product }));
+    dispatch(getProductRatingDetailThunk({ id }));
+    dispatch(getProductCommentsDetailThunk({ id }));
   }, [dispatch, product]);
 
   useEffect(() => {
     let review = 0;
-    for (const key in data.reviewCount) {
-      review = review + data.reviewCount[key];
+    for (const key in rating?.ratingCount) {
+      review = review + rating?.ratingCount[key];
     }
-    setReviewCount(review);
-  }, [data.reviewCount]);
-
-  const onClickOpenModal = () => {
-    setIsShowModal(true);
-  };
+    // setReviewCount(review);
+  }, [rating?.ratingCount]);
 
   const onClickCloseModal = () => {
     setIsShowModal(false);
+  };
+
+  const reviewCount = {
+    5: rating?.fiveCount,
+    4: rating?.fourCount,
+    3: rating?.threeCount,
+    2: rating?.twoCount,
+    1: rating?.oneCount,
   };
 
   return (
@@ -45,17 +55,17 @@ const ReviewsTabItem = () => {
       )}
       <Styled_Wrapper>
         <Grid container spacing={10}>
-          {data.attribute?.Отзывы?.length === 0 ? (
+          {comments?.length === 0 ? (
             <Grid item xs={7}>
               Отзывы нет
             </Grid>
           ) : (
-            data.attribute?.Отзывы?.map((user) => (
-              <Grid item xs={7} key={user.id}>
+            comments?.map((user) => (
+              <Grid item xs={7} key={user?.id}>
                 <Typography variant="h1" className="title">
                   Отзывы
                 </Typography>
-                <ReviewsTabSlice {...user} />
+                <ReviewsTabSlice {...user} myReview={user?.owner} />
                 <Typography component="div" className="flex center padding">
                   <Button variant="outlined">Показать еще</Button>
                 </Typography>
@@ -68,16 +78,16 @@ const ReviewsTabItem = () => {
               <Grid container>
                 <Grid item xs={6}>
                   <div className="rating">
-                    <h1>{reviewCount / 5}</h1>
+                    <h1>{rating?.rating}</h1>
 
                     <Rating
                       readOnly
                       size="small"
-                      value={reviewCount / 5}
+                      value={rating?.rating}
                       precision={0.5}
                     />
                   </div>
-                  <p>{data.countOfReviews} отзывов</p>
+                  <p>{rating?.ratingCount} отзывов</p>
                 </Grid>
                 <Grid item xs={6} className="ul">
                   {[5, 4, 3, 2, 1].map((review) => (
@@ -88,20 +98,9 @@ const ReviewsTabItem = () => {
                         value={review}
                         className="flex"
                       />
-                      {data.reviewCount && data.reviewCount[review]} отзывов
+                      {reviewCount[review]} отзывов
                     </li>
                   ))}
-                </Grid>
-                <Grid item xs={12}>
-                  <Styled_Button>
-                    <Button
-                      onClick={onClickOpenModal}
-                      variant="contained"
-                      width="90%"
-                    >
-                      Оставить отзыв
-                    </Button>
-                  </Styled_Button>
                 </Grid>
               </Grid>
             </Box>
@@ -150,10 +149,4 @@ const Styled_Wrapper = styled(Box)(() => ({
     boxShadow:
       "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
   },
-}));
-const Styled_Button = styled("div")(() => ({
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  paddingTop: "20px",
 }));

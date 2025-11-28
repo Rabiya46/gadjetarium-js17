@@ -27,7 +27,7 @@ const ViewedProducts = () => {
           ) : (
             <Grid container spacing={1}>
               {data?.viewedProducts?.map((product) => (
-                <Grid item key={product.productId}>
+                <Grid item key={product?.id}>
                   <ViewedProductCard {...product} />
                 </Grid>
               ))}
@@ -42,7 +42,6 @@ const ViewedProducts = () => {
 export default ViewedProducts;
 
 const StyledViewedProduct = styled(Box)(() => ({
-  padding: "80px 0 120px",
   "& .typography": {
     padding: "40px 0",
   },

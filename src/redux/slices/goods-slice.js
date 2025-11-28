@@ -15,6 +15,23 @@ export const getProductsThunk = createAsyncThunk(
   }
 );
 
+export const getProductsBySubproductsThunk = createAsyncThunk(
+  "goods/getProductsBySubproductsThunk",
+
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/subproducts/${id}/all`,
+        {}
+      );
+
+      return response.data; // только сериализуемые данные
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 // Удаление товара
 export const removeProductsThunk = createAsyncThunk(
   "goods/removeProduct",
@@ -57,6 +74,7 @@ const initialState = {
     removeProductsErrorMessage: null,
   },
   choosedItems: [],
+  dataSubproducts: [],
 };
 
 const goodsSlice = createSlice({
@@ -99,6 +117,19 @@ const goodsSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(getProductsThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errors.getProductsErrorMessage = action.payload;
+      })
+
+      .addCase(getProductsBySubproductsThunk.pending, (state) => {
+        state.isLoading = true;
+        state.errors.getProductsErrorMessage = null;
+      })
+      .addCase(getProductsBySubproductsThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.dataSubproducts = action.payload;
+      })
+      .addCase(getProductsBySubproductsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.errors.getProductsErrorMessage = action.payload;
       })

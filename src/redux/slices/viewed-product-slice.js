@@ -3,14 +3,14 @@ import axiosInstance from "../../config/axios-instance";
 
 export const fetchViewedProductThunk = createAsyncThunk(
   "viewedProductSlice/fetchViewedProductThunk",
-  async ({ id }, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const { data, status } = await axiosInstance.get(
-        `/api/subproducts/${id}`
-      );
+      const { data, status } = await axiosInstance.get(`/api/history`);
+
       if (!status === 200) {
         throw new Error("Server orror");
       }
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

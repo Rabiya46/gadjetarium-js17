@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import AnswerComment from "../UI/feedback/AnswerComment";
 
 const ReviewsTabSlice = ({
-  userMainResponse,
-  reviewTime,
-  productGrade,
-  userReview,
-  responseOfReview,
+  avatar,
+  firstName,
+  createdDate,
+  rating,
+  text,
+  adminResponse,
   myReview,
   id,
 }) => {
@@ -18,17 +19,16 @@ const ReviewsTabSlice = ({
       setReviewHover((prevState) => !prevState);
     }
   };
+
+  console.log(reviewHover);
   return (
     <>
       <Styled_User>
         <Typography component="div" className="flex gap2">
-          <Styled_Img
-            src={userMainResponse.image}
-            alt={userMainResponse.fullName}
-          />
+          <Styled_Img src={avatar} alt={firstName} />
           <Box>
-            <Typography variant="h5">{userMainResponse.fullName}</Typography>
-            <Typography variant="h6">{reviewTime}</Typography>
+            <Typography variant="h5">{firstName}</Typography>
+            <Typography variant="h6">{createdDate}</Typography>
           </Box>
         </Typography>
         <Box
@@ -37,10 +37,10 @@ const ReviewsTabSlice = ({
         >
           <Styled_Comment>
             <AnswerComment
-              answer={userReview}
-              responseOfReview={responseOfReview}
+              answer={text}
+              responseOfReview={adminResponse}
               reviewHover={reviewHover}
-              productGrade={productGrade}
+              productGrade={rating}
               id={id}
             />
           </Styled_Comment>

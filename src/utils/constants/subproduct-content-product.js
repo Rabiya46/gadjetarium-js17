@@ -2,19 +2,19 @@ import TableCellCount from "../../components/goods-cmp/content-table-cells/Table
 import TableCellCurrentPrice from "../../components/goods-cmp/content-table-cells/TableCellCurrentPrice";
 import TableCellDateFormat from "../../components/goods-cmp/content-table-cells/TableCellDateFormat";
 import TableCellEditAndDelete from "../../components/goods-cmp/content-table-cells/TableCellEditAndDelete";
-import TableCellImage from "../../components/goods-cmp/content-table-cells/TableCellImage";
+import TableCellImageSubproduct from "../../components/goods-cmp/content-table-cells/TableCellImagesSubproduct";
 import TableCellPriceAndDiscount from "../../components/goods-cmp/content-table-cells/TableCellPriceAndDiscount";
 import TableCellVendorCode from "../../components/goods-cmp/content-table-cells/TableCellVendorCode";
 
 export const tableHeader = [
   {
     Header: "Фото",
-    accessor: "photo",
+    accessor: "image",
     style: {
       flex: 0.5,
     },
     Cell: ({ row }) => {
-      return <TableCellImage {...row.original} />;
+      return <TableCellImageSubproduct {...row.original} />;
     },
   },
   {
@@ -34,6 +34,8 @@ export const tableHeader = [
       flex: 1,
     },
     Cell: ({ row }) => {
+      console.log(row.original, "fasdfasdfasd");
+
       return <p>{row.original.name}</p>;
     },
   },
@@ -54,6 +56,7 @@ export const tableHeader = [
       flex: 0.5,
     },
     Cell: ({ row }) => {
+      console.log(row.original);
       return <TableCellCount {...row.original} />;
     },
   },

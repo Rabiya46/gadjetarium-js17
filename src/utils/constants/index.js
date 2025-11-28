@@ -630,8 +630,8 @@ export const ITEM_SORT = [
     value: "allDiscount",
     subcategories: [
       { id: 1, title: "Все акции", value: "allDiscount" },
-      { id: 2, title: "До 50%", value: "50<" },
-      { id: 3, title: "Свыше 50%", value: "50>" },
+      { id: 2, title: "До 50%", value: "50>" },
+      { id: 3, title: "Свыше 50%", value: "50<" },
     ],
   },
   { id: 3, title: "Рекомендуемые", value: "recommend" },

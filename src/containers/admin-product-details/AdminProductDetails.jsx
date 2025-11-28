@@ -1,19 +1,14 @@
-import { styled, Rating, Typography, Grid } from "@mui/material";
+import { styled, Rating, Typography, Grid, Box } from "@mui/material";
 import ImgSlider from "../../components/UI/ImgSlider";
 import IconButton from "../../components/UI/IconButton";
-import { CartIcon, HeartActiveIcon, Favorites } from "../../assets";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ActionProductDetails } from "../../redux/slices/product-details-slice";
 import ProductData from "../../components/product-details/ProductData";
 import PopUp from "../../components/UI/PopUp";
 import { postProductToBasket } from "../../redux/slices/basket-slice";
-import { postFavoriteProducts } from "../../redux/slices/favorite-slice";
-import { useParams } from "react-router-dom";
 
 const AdminProductDetails = ({ data, count }) => {
-  const { catalogItem, product } = useParams();
-
   const [text, setText] = useState(["", "", ""]);
   const [dropDown, setDropDown] = useState(false);
 
@@ -28,14 +23,6 @@ const AdminProductDetails = ({ data, count }) => {
     dispatch(ActionProductDetails.addImages(data.images));
     dispatch(ActionProductDetails.setChooseItem(data.id));
   }, [data]);
-
-  const plusHandler = () => {
-    dispatch(ActionProductDetails.plusCount());
-  };
-
-  const minusHandler = () => {
-    dispatch(ActionProductDetails.minusCount());
-  };
 
   const onClickCartHandler = () => {
     if (basketData?.some((item) => item.id === data.id)) {
@@ -58,30 +45,6 @@ const AdminProductDetails = ({ data, count }) => {
   };
 
   const closeDropDown = () => setDropDown(false);
-
-  const attribute = location.pathname
-    .split(`/item/${catalogItem}/${product}/`)
-    .join("");
-
-  const addToFavoriteHandler = () => {
-    dispatch(postFavoriteProducts({ productId: data.id, attribute })).then(
-      () => {
-        data.favorite
-          ? setText([
-              "Товар удалён из избранных!",
-              "Перейти в избранное",
-              "/favorite",
-            ])
-          : setText([
-              "Товар добавлен в избранное!",
-              "Перейти в избранное",
-              "/favorite",
-            ]);
-
-        setDropDown(true);
-      }
-    );
-  };
 
   return (
     <>
@@ -133,29 +96,43 @@ const AdminProductDetails = ({ data, count }) => {
                   </Grid>
                 </Grid>
                 <Grid container className="colors">
-                  <Grid container className="text-center count">
+                  <Box
+                    container
+                    className="text-center count"
+                    style={{
+                      display: "flex",
+                      gap: "0.5rem",
+                      flexDirection: "column",
+                      marginLeft: "0",
+                    }}
+                  >
                     <Grid item xs={12} className="btn">
-                      <p>Количество:</p>
+                      <p style={{ width: "104px" }}>Цвет товара:</p>
                     </Grid>
 
                     <Grid item xs={12} className="flex between">
-                      <Styled_Button
-                        onClick={minusHandler}
-                        disabled={count === 1}
+                      <div
+                        style={{
+                          border: "1px solid purple",
+                          borderRadius: "50%",
+                          padding: "2px",
+                          paddingBottom: "2.3px",
+                          width: "25px",
+                          height: "25px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}
                       >
-                        -
-                      </Styled_Button>
-
-                      <Typography variant="h6">{count}</Typography>
-
-                      <Styled_Button
-                        onClick={plusHandler}
-                        disabled={data.count === count}
-                      >
-                        +
-                      </Styled_Button>
+                        <Styled_Button
+                          style={{
+                            backgroundColor: data.currentColor || "grey",
+                          }}
+                        />
+                      </div>
                     </Grid>
-                  </Grid>
+                  </Box>
 
                   <Grid item xs={5} className=" center">
                     <div>
@@ -174,16 +151,20 @@ const AdminProductDetails = ({ data, count }) => {
                       )}
 
                       <div className="between">
-                        <Component_Button onClick={addToFavoriteHandler}>
-                          {data.favorite ? <HeartActiveIcon /> : <Favorites />}
-                        </Component_Button>
+                        {/* <Component_Button onClick={addToFavoriteHandler}>
+                          {data.isFavorite ? (
+                            <HeartActiveIcon />
+                          ) : (
+                            <Favorites />
+                          )}
+                        </Component_Button> */}
 
                         <IconButton
                           onClick={onClickCartHandler}
-                          width="195px"
-                          icon={<CartIcon />}
+                          width="300px"
+                          // icon={<DeleteIcon color="white" />}
                         >
-                          В корзину
+                          Удалить
                         </IconButton>
                       </div>
                     </div>
@@ -305,25 +286,14 @@ const Discount_Styled = styled("div")(() => ({
   fontSize: "0.5rem",
 }));
 const Styled_Button = styled("button")(() => ({
-  width: "30px",
-  height: "30px",
+  width: "20px",
+  height: "20px",
   borderRadius: "50%",
   cursor: "pointer",
-  border: "1px solid grey",
+  border: "none",
 
   "&:hover": {
     background: "#292929",
     color: "white",
   },
-}));
-
-const Component_Button = styled("div")(() => ({
-  width: "65px",
-  border: "1px solid grey",
-  borderRadius: "5px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-  marginRight: "10px",
 }));

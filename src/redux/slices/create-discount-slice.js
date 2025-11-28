@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../config/axios-instance";
 import { getProductsThunk } from "./goods-slice";
+import { toast } from "react-toastify";
 
 export const postDiscountThunk = createAsyncThunk(
   "postDiscountThunk/createDiscount",
@@ -19,6 +20,10 @@ export const postDiscountThunk = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      const message =
+        error.response.data.endDate + " " + error.response.data.startDate;
+
+      toast.error(error.response.data.message || message);
       return error;
     }
   }

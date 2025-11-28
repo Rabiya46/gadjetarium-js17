@@ -13,9 +13,21 @@ const ProductData = ({ product }) => {
               Экран..............................................
               <span>{characteristics?.screenResolutionLaptop}</span>
             </li>
-            <li>
-              Цвет.................................................
-              <span>{product?.currentColor}</span>
+            <li style={{ display: "flex" }}>
+              Цвет................................................
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    borderRadius: "50%",
+                    backgroundColor: product?.currentColor,
+                    border: "1px solid black",
+                  }}
+                ></div>
+              </span>
             </li>
             <li>
               Операционная система..................
@@ -42,9 +54,21 @@ const ProductData = ({ product }) => {
               Память......................................
               <span>{characteristics?.memoryOfPhone}GB</span>
             </li>
-            <li>
-              Цвет...........................................
-              <span>{product?.currentColor}</span>
+            <li style={{ display: "flex" }}>
+              Цвет................................................
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    borderRadius: "50%",
+                    backgroundColor: product?.currentColor,
+                    border: "1px solid black",
+                  }}
+                ></div>
+              </span>
             </li>
             <li>
               Oперативная память................
@@ -63,9 +87,21 @@ const ProductData = ({ product }) => {
               Pазрешение экрана.........................
               <span>{product?.characteristics?.screenResolutionOfTablet}</span>
             </li>
-            <li>
-              Цвет...................................................
-              <span>{product?.currentColor}</span>
+            <li style={{ display: "flex" }}>
+              Цвет................................................
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    borderRadius: "50%",
+                    backgroundColor: product?.currentColor,
+                    border: "1px solid black",
+                  }}
+                ></div>
+              </span>
             </li>
             <li>
               Экран диагонал................................
@@ -88,9 +124,21 @@ const ProductData = ({ product }) => {
       case "Smartwatches":
         return (
           <Styled_Product>
-            <li>
-              Цвет...............................................
-              <span>{product?.currentColor}</span>
+            <li style={{ display: "flex" }}>
+              Цвет................................................
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    borderRadius: "50%",
+                    backgroundColor: product?.currentColor,
+                    border: "1px solid black",
+                  }}
+                ></div>
+              </span>
             </li>
             <li>
               Материал браслета......................

@@ -90,7 +90,7 @@ const ProductDetails = ({ data }) => {
   const dispatch = useDispatch();
   window.scrollTo({ top: 0 });
   const plusHandler = () => {
-    if (count < data.count) {
+    if (count < data?.count) {
       setCount(count + 1);
     }
   };
@@ -140,10 +140,10 @@ const ProductDetails = ({ data }) => {
                     sx={{ display: "flex", gap: 3, mb: 1, flexWrap: "wrap" }}
                   >
                     <Typography sx={{ color: "#4caf50", fontWeight: 600 }}>
-                      В наличии ({data.count} шт)
+                      В наличии ({data?.count} шт)
                     </Typography>
                     <Typography sx={{ color: "#757575" }}>
-                      Артикул: {data.article}
+                      Артикул: {data?.article}
                     </Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

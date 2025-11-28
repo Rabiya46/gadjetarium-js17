@@ -3,36 +3,46 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { EmptyStarIcon, StarIcon } from "../../../assets";
 import { priceProductSeparate } from "../../../utils/helpers/general";
+import { useSelector } from "react-redux";
 
 const ViewedProductCard = ({
-  productImage,
-  productName,
-  productPrice,
-  productRating,
-  productId,
+  image,
+  name,
+  price,
+  rating,
+  id,
   categoryId,
+  reviewsCount,
 }) => {
+  const { data } = useSelector((state) => state.auth);
+
   return (
     <>
-      <Link to={`/item/${categoryId}/${productId}/description`}>
-        <StyledViewedProductCard image={productImage}>
+      <Link
+        to={
+          data?.role === "USER"
+            ? `/item/${categoryId}/${id}/description`
+            : `/admin/goods/product/15/subproducts/${id}/description`
+        }
+      >
+        <StyledViewedProductCard image={image}>
           <Box className="image" />
           <Box className="padding info">
-            <Typography>{productName}</Typography>
+            <Typography>{name}</Typography>
             <Box className="box">
               Рейтинг
               <Rating
                 name="simple-controlled"
                 className="flex"
-                value={productRating / 5}
+                value={rating}
                 readOnly
                 icon={<StarIcon />}
                 emptyIcon={<EmptyStarIcon />}
               />
-              ({productRating})
+              ({reviewsCount})
             </Box>
             <Typography component="h5" variant="h5" className="price">
-              {priceProductSeparate(productPrice)} c
+              {priceProductSeparate(price)} c
             </Typography>
           </Box>
         </StyledViewedProductCard>
