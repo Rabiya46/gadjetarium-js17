@@ -2,21 +2,26 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axiosInstance from "../../config/axios-instance";
 
-const postEmail = createAsyncThunk("subscribe,postEmail", async (data) => {
-  try {
-    const response = await axiosInstance.post("mailings/subscribe", data);
+const postEmail = createAsyncThunk(
+  "subscribe,postEmail",
+  async (searchTerm) => {
+    try {
+      const response = await axiosInstance.post(
+        `/api/mailings/subscribe?email=${searchTerm}`
+      );
 
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+
+      return response;
+    } catch (error) {
+      return error;
     }
-
-    return response;
-  } catch (error) {
-    return error;
   }
-});
+);
 
 const subscribeSlice = createSlice({
   name: "subscribe",
