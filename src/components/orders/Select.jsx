@@ -18,6 +18,8 @@ const Select = ({ status: orderStatus, receivingMethod: orderType, id }) => {
   const currentStatus = searchParams.get("orderStatus");
   const currentPage = searchParams.get("page_index");
 
+  console.log(orderType);
+
   // console.log(orderType);
 
   const [open, setOpen] = useState(false);
