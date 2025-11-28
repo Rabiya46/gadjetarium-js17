@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Box, styled, Typography } from "@mui/material";
-// import HistoryDetails from "./HistoryDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getHistoryOrders } from "../../redux/slices/private-slice";
 import HistoreEmpty from "./HistoreEmpty";
 import { Link } from "react-router-dom";
 import { orderStatus } from "../../utils/helpers/history";
 import { LinearProgress } from "@mui/material";
+
 const History = () => {
   const { data, status } = useSelector((state) => state.private.history);
 
@@ -19,13 +19,14 @@ const History = () => {
   };
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getHistoryOrders());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
-      {status === "panding" ? (
+      {status === "pending" ? (
         <Box sx={{ width: "80%" }}>
           <LinearProgress color="secondary" />
         </Box>
@@ -33,19 +34,22 @@ const History = () => {
         <>
           {data.length > 0 ? (
             <StyledContainer>
-              {data?.map((item) => (
-                <Link to={`/vip/history/${item.id}`} key={item.id}>
+              {data?.map((item, index) => (
+                <Link
+                  to={`/vip/history/${item.article}`}
+                  key={item.article || index}
+                >
                   <Typography component="div" className="box">
                     <ul>
-                      <li className="date">{item.dateOfOrder}</li>
-                      <li className="code">№ {item.orderNumber}</li>
+                      <li className="date">{`${item.firstName} ${item.lastName}`}</li>
+                      <li className="code">артикул {item.article}</li>
                       <li className="status">
                         <StyledStatusColor color={colors[item.orderStatus]}>
                           {orderStatus(item.orderStatus)}
                         </StyledStatusColor>
                       </li>
                     </ul>
-                    <span className="price">{item.totalSum} с</span>
+                    <span className="price">{item.price} с</span>
                   </Typography>
                 </Link>
               ))}
@@ -55,15 +59,13 @@ const History = () => {
           )}
         </>
       )}
-
-      {/* <HistoryDetails /> */}
     </>
   );
 };
 
 export default History;
 
-const StyledContainer = styled(Box)((props) => ({
+const StyledContainer = styled(Box)(() => ({
   width: "80%",
   fontFamily: "Inter",
   fontStyle: "normal",
@@ -99,7 +101,6 @@ const StyledContainer = styled(Box)((props) => ({
   "& .status": {
     fontWeight: 400,
     fontSize: "16px",
-    color: props.color,
   },
 }));
 

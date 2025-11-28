@@ -5,7 +5,7 @@ export const getHistoryOrders = createAsyncThunk(
   "private/getHistoryOrders",
   async () => {
     try {
-      const response = await axiosInstance.get("personals/orders");
+      const response = await axiosInstance.get("api/orders/orders");
       const result = await response.data;
 
       return result;
@@ -18,7 +18,7 @@ export const getFavorites = createAsyncThunk(
   "private/getFavorites",
   async () => {
     try {
-      const response = await axiosInstance.get("personals/favorites");
+      const response = await axiosInstance.get("api/favorites/getAll");
       const result = await response.data;
 
       return result;

@@ -1,19 +1,12 @@
 import { Container, styled, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { clearHistory } from "../../redux/slices/private-slice";
 import { head } from "../../utils/constants";
-import { ROUTES } from "../../utils/constants/routes";
 
 const PersonalArea = () => {
-  const { data } = useSelector((state) => state.private.history);
-
   const [title, setTitle] = useState(head[0].label);
 
   const location = useLocation();
-
-  const dispatch = useDispatch();
 
   const onClickButton = (id) => {
     setTitle(head[id].label);
@@ -23,9 +16,9 @@ const PersonalArea = () => {
     return location.pathname.split("/vip/").join("");
   }, [location]);
 
-  const clearHandler = () => {
-    dispatch(clearHistory());
-  };
+  // const clearHandler = () => {
+  //   dispatch(clearHistory());
+  // };
   return (
     <StyledContainer>
       <Typography className="header" component="div">
@@ -45,13 +38,13 @@ const PersonalArea = () => {
             </Link>
           ))}
         </Tabs>
-        {data.length > 0
+        {/* {data.length > 0
           ? active === ROUTES.HISTORY && (
               <p className="pointer flex center" onClick={clearHandler}>
                 <span>&times; </span> Очистить список заказов
               </p>
             )
-          : null}
+          : null} */}
       </div>
 
       <Outlet />

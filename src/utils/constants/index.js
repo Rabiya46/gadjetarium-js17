@@ -324,7 +324,7 @@ export const userProfileStatus_FAKE_DATA = {
   ],
   enteredLogIn: [
     { id: 1, title: "История заказов", link: "/vip/history" },
-    { id: 2, title: "Избранное", link: "vip/favorite" },
+    { id: 2, title: "Избранное", link: "/favorite" },
     { id: 3, title: "Профиль", link: "vip/profile" },
     { id: 4, title: "Выйти", link: "" },
   ],
@@ -569,7 +569,7 @@ export const SECOND_TABS_DATA_ORDERS = [
 ];
 export const head = [
   { id: 1, label: "История заказов", link: ROUTES.HISTORY },
-  { id: 2, label: "Избранное", link: ROUTES.LIKE },
+  { id: 2, label: "Избранное", link: "/favorites" },
   { id: 3, label: "Профиль", link: ROUTES.PROFILE },
 ];
 
