@@ -7,7 +7,7 @@ const SubcategoryName = ({
   handleToggle,
   subCategoryNames = [],
 }) => {
-  // // console.log(subCategoryNames);
+  console.log(subCategoryNames);
   return (
     <Box key={id} className="subcategory-box">
       <FormControlLabel
@@ -16,7 +16,7 @@ const SubcategoryName = ({
         control={
           <Checkbox
             color="secondary"
-            checked={subCategoryNames.includes(categoryName)}
+            checked={subCategoryNames?.includes(categoryName)}
             onClick={() => handleToggle(id, categoryName)}
           />
         }

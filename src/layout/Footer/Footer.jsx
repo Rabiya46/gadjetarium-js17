@@ -18,10 +18,12 @@ const Footer = () => {
 
   const [searchTerm] = useDebounce(value, 1000);
 
+  console.log(searchTerm);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(postEmail({ email: searchTerm }));
+    dispatch(postEmail(searchTerm));
 
     setValue("");
   };

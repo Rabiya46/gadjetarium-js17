@@ -27,7 +27,7 @@ const OrdersTabs = ({ searchTerm }) => {
   const isLoading = useSelector((state) => state.orderProduct.isLoading);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const orderStatus = searchParams.get("orderStatus") || "WAITING";
+  const orderStatus = searchParams.get("orderStatus") || "waiting";
   const page = searchParams.get("page_index") || 1;
 
   const data = orders || [];
@@ -51,9 +51,9 @@ const OrdersTabs = ({ searchTerm }) => {
 
   const requestParams = useMemo(() => {
     const params = {
-      status: orderStatus,
       page,
       size: 7,
+      status: orderStatus,
     };
 
     const startDate = format(new Date(value[0]), "yyyy-MM-dd");
@@ -107,7 +107,7 @@ const OrdersTabs = ({ searchTerm }) => {
 
           <DatePicker date={dates} setDate={setDates} />
 
-          {TAB_ITEMS_ORDER.map((tab, i) => (
+          {TAB_ITEMS_ORDER?.map((tab, i) => (
             <div key={i}>
               {orderStatus === `${tab.tabTitle}` &&
                 (data.length < 1 ? (

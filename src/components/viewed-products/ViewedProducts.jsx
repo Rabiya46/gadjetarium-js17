@@ -18,7 +18,7 @@ const ViewedProducts = () => {
       </Typography>
       {errors?.viewedProductError ? (
         <Typography classes={{ root: "typography" }} variant="h5">
-          {errors.viewedProductError}
+          {errors?.viewedProductError}
         </Typography>
       ) : (
         <>

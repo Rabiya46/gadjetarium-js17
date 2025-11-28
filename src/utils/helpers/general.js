@@ -19,6 +19,8 @@ export const checkInOrderStatus = (key) => {
       return "Самовывоз";
     case "DELIVERY":
       return "Доставка";
+    // case "DELIVERED":
+    //   return "Получен";
     case "WAITING":
       return "В ожидании";
     case "PROCESSING":
@@ -29,6 +31,8 @@ export const checkInOrderStatus = (key) => {
       return "Доставлен";
     case "CANCEL":
       return "Отменено";
+    case "READY_FOR_PICKUP":
+      return "Готов к выдаче";
     default:
       return "";
   }

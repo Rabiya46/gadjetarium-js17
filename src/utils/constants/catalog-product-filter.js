@@ -356,7 +356,7 @@ export const catalogProductData = [
 ];
 
 export const CATALOG_PRODUCTS_FILTERS_KEYS = [
-  "subCategoryNames",
+  "brands",
   "colors",
   "memories",
   "rams",

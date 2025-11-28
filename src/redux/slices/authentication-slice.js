@@ -131,7 +131,7 @@ const authenticationSlice = createSlice({
       state.data = {};
       state.isAuthenticated = false;
       state.data = initialState.data;
-      localStorage.removeItem(GADJEDTARIUM_LOGIN_INFO);
+      localStorage.clear();
     },
     getUserData: (state, action) => {
       state.isAuthenticated = true;

@@ -499,27 +499,27 @@ export const DUMMY_PRODUCT_DATA = [
 export const TAB_ITEMS_ORDER = [
   {
     id: 1,
-    tabTitle: "WAITING",
+    tabTitle: "waiting",
     title: "В ожидании",
   },
   {
     id: 2,
-    tabTitle: "PROCESSING",
+    tabTitle: "Processing",
     title: "В обработке",
   },
   {
     id: 3,
-    tabTitle: "COURIER_ON_THE_WAY",
+    tabTitle: "Courier on the way",
     title: "Курьер в пути",
   },
   {
     id: 4,
-    tabTitle: "DELIVERED",
+    tabTitle: "Delivered",
     title: "Доставлены",
   },
   {
     id: 5,
-    tabTitle: "CANCEL",
+    tabTitle: "Canceled",
     title: "Отменены",
   },
 ];
@@ -609,17 +609,17 @@ export const OrdersTableListData = [
 
 export const titlesOrderPopUpOne = [
   { text: "В ожидании", tab: "WAITING" },
-  { text: "Готов к выдаче", tab: "PROCESSING" },
-  { text: "Получен", tab: "DELIVERY" },
-  { text: "Отменено", tab: "CANCEL" },
+  { text: "Готов к выдаче", tab: "READY_FOR_PICKUP" },
+  { text: "Получен", tab: "DELIVERED" },
+  { text: "Отменено", tab: "CANCELED" },
 ];
 
 export const titlesOrderPopUpTwo = [
   { text: "В ожидании", tab: "WAITING" },
-  { text: "Готов к выдаче", tab: "PROCESSING" },
+  { text: "Готов к выдаче", tab: "READY_FOR_PICKUP" },
   { text: "Курьер в пути", tab: "COURIER_ON_THE_WAY" },
-  { text: "Доставлен", tab: "DELIVERY" },
-  { text: "Отменено", tab: "CANCEL" },
+  { text: "Доставлен", tab: "DELIVERED" },
+  { text: "Отменено", tab: "CANCELED" },
 ];
 
 export const ITEM_SORT = [

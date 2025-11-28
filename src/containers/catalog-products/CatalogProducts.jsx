@@ -9,16 +9,16 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import useDropDown from "../../hooks/useDropDown";
+// import useDropDown from "../../hooks/useDropDown";
 import { catalogMenu_FAKE_DATA } from "../../utils/constants";
 
-import Sort from "../../components/catalog-products/Sort";
+// import Sort from "../../components/catalog-products/Sort";
 import {
   catalogSliceAction,
   fetchDataCatalog,
   fetchColorCatalog,
 } from "../../redux/slices/catalog-slice.js";
-import { ArrowDownIcon, DeleteIconInCart } from "../../assets";
+import { DeleteIconInCart } from "../../assets";
 import ProductsList from "../../components/catalog-products/ProductsList";
 import FilterProducts from "../../components/catalog-products/FilterProducts";
 import { filteredCatalogSliceAction } from "../../redux/slices/catalog-filter-slice";
@@ -55,7 +55,7 @@ const CatalogProducts = () => {
     setChips(getChips);
   }, [filteredCatalog]);
 
-  const [sortEL, setSortEl] = useDropDown();
+  // const [sortEL, setSortEl] = useDropDown();
 
   const { catalogItem } = useParams();
 
@@ -77,15 +77,18 @@ const CatalogProducts = () => {
   const removeCatalogValueByChips = (key, title) => {
     dispatch(filteredCatalogSliceAction.removeByChip({ key, title }));
   };
+  console.log(filteredCatalog);
 
   useEffect(() => {
     dispatch(
       fetchDataCatalog({
         ...filteredCatalog,
         colors: filteredCatalog.colors,
-        subCategoryNames: filteredCatalog.subCategoryNames,
-        memories: filteredCatalog.memories,
-        rams: filteredCatalog.rams,
+        brands: filteredCatalog.brands
+          ? filteredCatalog.brands.join(",")
+          : undefined,
+        memories: filteredCatalog.memories.join(","),
+        rams: filteredCatalog.rams.join(","),
         laptopCPUs: filteredCatalog.laptopCPUs,
         screenSizes: filteredCatalog.screenSizes,
         screenResolutions: filteredCatalog.screenResolutions,
@@ -106,9 +109,11 @@ const CatalogProducts = () => {
   const catalogData = {
     ...filteredCatalog,
     colors: filteredCatalog.colors,
-    subCategoryNames: filteredCatalog.subCategoryNames,
-    memories: filteredCatalog.memories,
-    rams: filteredCatalog.rams,
+    brands: filteredCatalog.brands
+      ? filteredCatalog.brands.join(",")
+      : undefined,
+    memories: filteredCatalog.memories.join(","),
+    rams: filteredCatalog.rams.join(","),
     laptopCPUs: filteredCatalog.laptopCPUs,
     screenSizes: filteredCatalog.screenSizes,
     screenResolutions: filteredCatalog.screenResolutions,
@@ -177,15 +182,15 @@ const CatalogProducts = () => {
             </Box>
 
             <Grid item xs={1.5} className="flex gap2">
-              <Box className="flexgrow flex height" onClick={setSortEl}>
-                <Sort anchorElCatalog={sortEL} handleCloseCatalog={setSortEl} />
+              {/* <Box className="flexgrow flex height" onClick={setSortEl}> */}
+              {/* <Sort anchorElCatalog={sortEL} handleCloseCatalog={setSortEl} />
                 <Box className="sort-container" onClick={setSortEl}>
                   <Typography className="gap capitalize sort-text  pointer">
                     Сортировать
                   </Typography>
                   <ArrowDownIcon />
-                </Box>
-              </Box>
+                </Box> */}
+              {/* </Box> */}
             </Grid>
           </Box>
 

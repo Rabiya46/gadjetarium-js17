@@ -26,7 +26,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
   const [value, setValue] = useState();
   const [showCategory, setShowCategory] = useState(5);
 
-  const { subCategoryNames, priceFrom, priceTo } = useSelector(
+  const { brands, priceFrom, priceTo } = useSelector(
     (state) => state.filteredCatalog
   );
 
@@ -54,7 +54,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
   };
 
   const handleToggle = (_, title) => {
-    if (subCategoryNames.includes(title)) {
+    if ([brands]?.includes(title)) {
       return dispatch(filteredCatalogSliceAction.subCategoryNameElse(title));
     }
     return dispatch(filteredCatalogSliceAction.subCategoryName(title));
@@ -100,7 +100,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
                 .map((category) => (
                   <SubcategoryName
                     key={category.id}
-                    subCategoryNames={subCategoryNames}
+                    subCategoryNames={brands}
                     handleToggle={handleToggle}
                     {...category}
                   />
@@ -162,7 +162,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
               </Box>
             </AccordionDetails>
           </Accordion>
-          <Accordion classes={{ root: "accordion" }}>
+          {/* <Accordion classes={{ root: "accordion" }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon className="arrow-icon" />}
             >
@@ -183,7 +183,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
                   {...category}
                 />
               ))} */}
-            </AccordionDetails>
+          {/* </AccordionDetails>
             {colorResponses?.length > 5 ? (
               <Button
                 value={value}
@@ -203,7 +203,7 @@ const FilterProducts = ({ handelResetAllFilters, colorResponses }) => {
                 )}
               </Button>
             ) : null}
-          </Accordion>
+          </Accordion> */}
           {findedCatalogFilter.categories.map((product) => (
             <SubproductsFilter key={product.id} {...product} />
           ))}

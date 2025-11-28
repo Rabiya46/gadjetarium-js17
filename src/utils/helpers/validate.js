@@ -95,7 +95,7 @@ export const orderingValidateSchemaWithAdreess = yup.object().shape({
   firstName: yup.string().required("Имя обязательное поле!"),
   lastName: yup.string().required("Фамилия обязательное поле!"),
 
-  phoneNumber: yup
+  telephone: yup
     .string()
     .max(19, "Номер телефона должен быть не более 13 символов!")
     .min(13)

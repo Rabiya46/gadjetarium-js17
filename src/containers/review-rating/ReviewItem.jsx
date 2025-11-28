@@ -1,11 +1,8 @@
 import { Box, Rating, styled } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ArrowOrderIcon, ArrowOrderIconRotate, DeleteIcon } from "../../assets";
-import {
-  addComment,
-  deleteRevewRating,
-} from "../../redux/slices/review-rating-slice";
+import { ArrowOrderIcon, ArrowOrderIconRotate } from "../../assets";
+import { addComment } from "../../redux/slices/review-rating-slice";
 import Button from "../../components/UI/button/Button";
 import { format, parseISO } from "date-fns";
 
@@ -20,9 +17,9 @@ const ReviewItem = ({ review }) => {
     ? review.userReview
     : review.userReview?.split(",", 1).join("");
 
-  const deleteHandler = () => {
-    dispatch(deleteRevewRating({ id: review.id }));
-  };
+  // const deleteHandler = () => {
+  //   dispatch(deleteRevewRating({ id: review.id }));
+  // };
 
   const commentHandler = () => {
     dispatch(
@@ -109,7 +106,7 @@ const ReviewItem = ({ review }) => {
         </Box>
 
         <Box className="icons">
-          <DeleteIcon onClick={deleteHandler} />
+          {/* <DeleteIcon onClick={deleteHandler} /> */}
 
           {reviews ? (
             <ArrowOrderIconRotate onClick={() => setReview(!reviews)} />
