@@ -9,6 +9,7 @@ import Button from "../UI/button/Button";
 import Modal from "../UI/Modal";
 
 const Delete = ({ fullName, id }) => {
+  console.log(id);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();

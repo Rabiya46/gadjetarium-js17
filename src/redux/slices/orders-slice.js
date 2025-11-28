@@ -35,14 +35,7 @@ const updateOrderProducts = createAsyncThunk(
   async ({ id, orderStatus, currentStatus, currentPage }, { dispatch }) => {
     try {
       const response = await axiosInstance.put(
-        `adminOrders`,
-        {},
-        {
-          params: {
-            id,
-            orderStatus,
-          },
-        }
+        `/api/orders/${id}/status?status=${orderStatus}`
       );
 
       dispatch(

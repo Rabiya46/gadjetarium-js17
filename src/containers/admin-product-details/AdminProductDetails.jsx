@@ -35,9 +35,9 @@ const AdminProductDetails = ({ data, count }) => {
         })
       ).then(() => {
         setText([
-          "Товар успешно добавлен в корзину!",
-          "Перейти в корзину",
-          "/cart",
+          "Товар успешно удален!",
+          // "Перейти в корзину",
+          // "/cart",
         ]);
         setDropDown(true);
       });
