@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -16,26 +17,29 @@ import {
   Remove,
   Add,
 } from "@mui/icons-material";
+import { postProductToBasket } from "../../redux/slices/basket-slice";
 import { useDispatch } from "react-redux";
 import { postFavoriteProducts } from "../../redux/slices/favorite-slice";
-import { postProductToBasket } from "../../redux/slices/basket-slice";
-import { useState } from "react";
 
 const StyledContainer = styled(Box)(() => ({
   minHeight: "100vh",
-  boxShadow: "none !important",
+  backgroundColor: "#f5f5f5",
+  boxShadow: "none",
 }));
 
 const StyledPaper = styled(Paper)(() => ({
-  boxShadow: "none !important",
+  maxWidth: "1400px",
   margin: "0 auto",
-  background: "#f4f4f4",
+  overflow: "hidden",
+  background: "none",
+  boxShadow: "none",
 }));
 
 const ImageContainer = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  background: "none",
   "& img": {
     maxWidth: "100%",
     height: "auto",
@@ -59,7 +63,7 @@ const DiscountBadge = styled(Box)(() => ({
 }));
 
 const CounterButton = styled(IconButton)(() => ({
-  border: "2px solid #f4f4f4",
+  border: "2px solid #e0e0e0",
   borderRadius: "50%",
   width: "40px",
   height: "40px",
@@ -75,25 +79,26 @@ const CounterButton = styled(IconButton)(() => ({
 
 const ColorBox = styled(Box)(() => ({
   fontWeight: 500,
-  display: "flex",
-  gap: "5px",
 }));
 
 const CharacteristicsBox = styled(Box)(() => ({
   backgroundColor: "#f9f9f9",
 }));
 
+const PriceContainer = styled(Box)(() => ({
+  backgroundColor: "#f9f9f9",
+}));
+
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
 
-  const dispatch = useDispatch();
-  window.scrollTo({ top: 0 });
   const plusHandler = () => {
-    if (count < data?.count) {
+    if (count < data.count) {
       setCount(count + 1);
     }
   };
+
+  const dispatch = useDispatch();
 
   const minusHandler = () => {
     if (count > 1) {
@@ -102,7 +107,6 @@ const ProductDetails = ({ data }) => {
   };
 
   const toggleFavorite = (id) => {
-    setIsFavorite(!isFavorite);
     dispatch(postFavoriteProducts({ productId: id }));
   };
 
@@ -115,7 +119,6 @@ const ProductDetails = ({ data }) => {
       alert("Товар успешно добавлен в корзину!");
     });
   };
-
   return (
     <StyledContainer>
       <StyledPaper elevation={3}>
@@ -124,7 +127,11 @@ const ProductDetails = ({ data }) => {
             {/* Image Section */}
             <Grid item xs={12} lg={6}>
               <ImageContainer>
-                <img src={data?.images[0]} alt={data?.name} />
+                {data?.images ? (
+                  <img src={data?.images[0]} alt={data?.name} />
+                ) : (
+                  <Typography>Изображение недоступно</Typography>
+                )}
               </ImageContainer>
             </Grid>
 
@@ -170,15 +177,15 @@ const ProductDetails = ({ data }) => {
                       Цвет товара:
                     </Typography>
                     <ColorBox>
+                      {/* <Typography>{data?.currentColor}</Typography> */}
                       <div
                         style={{
-                          backgroundColor: data?.currentColor,
                           width: 24,
                           height: 24,
                           borderRadius: "5px",
+                          backgroundColor: data?.currentColor,
                         }}
                       />
-                      <Typography>{data?.currentColor}</Typography>
                     </ColorBox>
                   </Grid>
 
@@ -220,34 +227,44 @@ const ProductDetails = ({ data }) => {
                   >
                     Характеристики:
                   </Typography>
-                  <CharacteristicsBox>
-                    {Object.entries(data?.characteristics).map(
-                      ([key, value]) => (
-                        <Box
-                          key={key}
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            py: 1,
-                            "&:not(:last-child)": {
-                              borderBottom: "1px solid #e0e0e0",
-                            },
-                          }}
+                  {data?.characteristics &&
+                    Object.keys(data.characteristics).length > 0 && (
+                      <Box>
+                        <Typography
+                          sx={{ fontWeight: 600, mb: 1.5, color: "#424242" }}
                         >
-                          <Typography sx={{ color: "#757575" }}>
-                            {key}:
-                          </Typography>
-                          <Typography sx={{ fontWeight: 500 }}>
-                            {value}
-                          </Typography>
-                        </Box>
-                      )
+                          Характеристики:
+                        </Typography>
+                        <CharacteristicsBox>
+                          {Object.entries(data.characteristics).map(
+                            ([key, value]) => (
+                              <Box
+                                key={key}
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  py: 1,
+                                  "&:not(:last-child)": {
+                                    borderBottom: "1px solid #e0e0e0",
+                                  },
+                                }}
+                              >
+                                <Typography sx={{ color: "#757575" }}>
+                                  {key}:
+                                </Typography>
+                                <Typography sx={{ fontWeight: 500 }}>
+                                  {value}
+                                </Typography>
+                              </Box>
+                            )
+                          )}
+                        </CharacteristicsBox>
+                      </Box>
                     )}
-                  </CharacteristicsBox>
                 </Box>
 
                 {/* Price and Actions */}
-                <Box>
+                <PriceContainer>
                   <Box
                     sx={{
                       display: "flex",
@@ -274,7 +291,7 @@ const ProductDetails = ({ data }) => {
                             textDecoration: "line-through",
                           }}
                         >
-                          {data?.price.toLocaleString()} с
+                          {data?.price?.toLocaleString()} с
                         </Typography>
                       )}
                     </Box>
@@ -282,7 +299,7 @@ const ProductDetails = ({ data }) => {
 
                   <Box sx={{ display: "flex", gap: 2 }}>
                     <IconButton
-                      onClick={() => toggleFavorite(data?.id)}
+                      onClick={() => toggleFavorite(data.id)}
                       sx={{
                         border: "2px solid #e0e0e0",
                         borderRadius: 1,
@@ -312,7 +329,7 @@ const ProductDetails = ({ data }) => {
                         fontSize: "16px",
                         boxShadow: 2,
                         "&:hover": {
-                          backgroundColor: "#bb109f",
+                          backgroundColor: "#aa0d90",
                           boxShadow: 4,
                         },
                       }}
@@ -320,7 +337,7 @@ const ProductDetails = ({ data }) => {
                       В корзину
                     </Button>
                   </Box>
-                </Box>
+                </PriceContainer>
               </Box>
             </Grid>
           </Grid>

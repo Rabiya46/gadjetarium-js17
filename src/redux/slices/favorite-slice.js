@@ -25,17 +25,20 @@ const postFavoriteProducts = createAsyncThunk(
   "favorite/postFavoriteProducts",
   async (params, { dispatch }) => {
     try {
-      const response = await axiosInstance.post(
-        `/api/favorites/${params.productId}`
-      );
+      // Получаем ID из localStorage, если он там есть
+      const savedProductId = localStorage.getItem("currentProductId");
+      const productId = savedProductId || params.productId;
+
+      const response = await axiosInstance.post(`/api/favorites/${productId}`);
       const data = await response.data;
 
       dispatch(getFavoriteProducts());
       dispatch(fetchDataCatalog(params.dataCatalog));
+      console.log(params, "xaxaxaxaxa");
 
       dispatch(
         getProductDetailThunk({
-          product: params.productId,
+          productId: productId,
           attribute:
             params.attribute === "characteristics"
               ? "Характеристики"
@@ -43,7 +46,10 @@ const postFavoriteProducts = createAsyncThunk(
               ? "Описание"
               : "Отзывы",
         })
-      );
+      ).then(() => {
+        // Удаляем ID из localStorage после успешной загрузки
+        localStorage.removeItem("currentProductId");
+      });
 
       dispatch(fetchDiscountProduct(params.size.discount));
       dispatch(fetchNewProduct(params.size.news));
@@ -51,6 +57,8 @@ const postFavoriteProducts = createAsyncThunk(
 
       return data;
     } catch (error) {
+      // Удаляем ID из localStorage даже при ошибке
+      localStorage.removeItem("currentProductId");
       return error;
     }
   }

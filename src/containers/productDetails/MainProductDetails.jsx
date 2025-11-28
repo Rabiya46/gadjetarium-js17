@@ -5,7 +5,6 @@ import GadgetariumSpinnerLoading from "../../components/GadgetariumSpinnerLoadin
 import Tabs from "../../components/UI/Tabs";
 import { SEARCH_PARAMS, TAB_ITEMS } from "../../utils/constants";
 import ProductDetails from "./ProductDetails";
-// import { animateScroll as Scroll } from "react-scroll";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { getProductDetailThunk } from "../../redux/slices/product-details-slice";
@@ -19,10 +18,20 @@ const MainProductDetails = () => {
 
   const { product } = useParams();
 
-  console.log(product);
-
   useEffect(() => {
-    dispatch(getProductDetailThunk({ product }));
+    // Сохраняем ID в localStorage перед загрузкой
+    localStorage.setItem("currentProductId", product);
+
+    dispatch(getProductDetailThunk({ productId: product }))
+      .unwrap()
+      .then(() => {
+        // Удаляем ID из localStorage после успешной загрузки
+        localStorage.removeItem("currentProductId");
+      })
+      .catch(() => {
+        // В случае ошибки тоже удаляем
+        localStorage.removeItem("currentProductId");
+      });
   }, [dispatch, product]);
 
   if (!data) {

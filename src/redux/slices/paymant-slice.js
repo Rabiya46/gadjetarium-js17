@@ -24,7 +24,7 @@ const postOrdering = createAsyncThunk(
   "paymant/postOrdering",
   async (params, { dispatch }) => {
     try {
-      const response = await axiosInstance.post("userOrders", params);
+      const response = await axiosInstance.post("api/orders", params);
 
       if (response.status === 200) {
         toast.success(response.data.message);
