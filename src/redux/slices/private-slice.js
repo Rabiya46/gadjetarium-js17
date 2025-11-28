@@ -73,7 +73,10 @@ export const putProfile = createAsyncThunk(
   "private/putProfile",
   async (param, { dispatch }) => {
     try {
-      const response = await axiosInstance.put(`personals/updateUser`, param);
+      const response = await axiosInstance.put(
+        `/api/users/update-profile`,
+        param
+      );
       const result = await response.data;
       dispatch(getProfile());
 

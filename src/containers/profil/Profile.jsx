@@ -38,13 +38,13 @@ const Profile = () => {
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
+      telephone: "",
       address: "",
       image: "",
     },
     onSubmit: (value) => {
       dispatch(putProfile(value)).then((res) => {
-        if (res.payload.status === "ok") {
+        if (res.payload) {
           return toast.success("Пользователь успешно обновлен");
         }
         return toast.error("Что-то не так с сервером или данными");
@@ -145,13 +145,13 @@ const Profile = () => {
                         format="+996 (###) ### ###"
                         mask="_"
                         placeholder="+996(_ _ _) _ _  _ _  _ _"
-                        name="phone"
-                        value={values.phone || ""}
+                        name="telephone"
+                        value={values.telephone || ""}
                         onChange={handleChange}
                         className={errors.phone ? "error" : ""}
                       />
-                      {errors.phone && touched.phone && (
-                        <p className="errors">{errors.phone}</p>
+                      {errors.telephone && touched.telephone && (
+                        <p className="errors">{errors.telephone}</p>
                       )}
                     </Box>
                   </Grid>
@@ -185,7 +185,7 @@ const Profile = () => {
                             </StyledButton>
                           </Link>
 
-                          <StyledButton variant="contained">
+                          <StyledButton variant="contained" type="submit">
                             {statuss === "pending" ? (
                               <CircularProgress color="secondary" />
                             ) : (

@@ -6,7 +6,7 @@ const initialState = {
   size: 12,
   priceFrom: 500,
   priceTo: 250000,
-  subCategoryNames: [],
+  brands: [],
   colors: [],
   memories: [],
   rams: [],
@@ -34,10 +34,10 @@ const filteredCatalogSlice = createSlice({
       state.discountField = action.payload;
     },
     subCategoryName: (state, action) => {
-      state.subCategoryNames = [...state.subCategoryNames, action.payload];
+      state.brands = [...state.brands, action.payload];
     },
     subCategoryNameElse: (state, action) => {
-      state.subCategoryNames = state.subCategoryNames.filter(
+      state.brands = state.brands.filter(
         (category) => category !== action.payload
       );
     },
