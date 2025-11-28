@@ -22,7 +22,7 @@ const ReviewsTabItem = () => {
 
   const { product } = useParams();
 
-  const { data } = useSelector((state) => state.productDetails);
+  const { data, comments } = useSelector((state) => state.productDetails);
 
   const dispatch = useDispatch();
 
@@ -58,7 +58,7 @@ const ReviewsTabItem = () => {
       <Styled_Wrapper>
         <Grid container spacing={0}>
           <Grid item xs={7.5}>
-            {data.attribute?.Отзывы?.length === 0 ? (
+            {comments?.length === 0 ? (
               <Grid item xs={7}>
                 Отзывов нет
               </Grid>
@@ -69,7 +69,7 @@ const ReviewsTabItem = () => {
                     <Typography variant="h1" className="title">
                       Отзывы
                     </Typography>
-                    {data.attribute?.Отзывы?.map((user) => (
+                    {comments?.map((user) => (
                       <Grid item xs={12} key={user.id}>
                         <ReviewsTabSlice {...user} />
                       </Grid>
@@ -79,7 +79,7 @@ const ReviewsTabItem = () => {
                       <Button
                         variant="outlined"
                         onClick={onClickSize}
-                        disabled={size !== data.attribute?.Отзывы?.length}
+                        disabled={size !== comments?.length}
                       >
                         Показать еще
                       </Button>

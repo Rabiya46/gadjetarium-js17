@@ -32,6 +32,7 @@ import bannerSlice from "./slices/banner-slice";
 import searchSlice from "./slices/search-slice";
 import adminProductDetailsSlice from "./slices/admin-product-details-slice";
 import { reviewRating } from "./slices/review-rating-slice";
+import createDiscount from "./slices/create-discount-slice";
 
 const rootReducer = combineReducers({
   auth: reducerAuthenticationSlice,
@@ -56,6 +57,7 @@ const rootReducer = combineReducers({
   search: searchSlice.reducer,
   adminProductDetails: adminProductDetailsSlice.reducer,
   reviewRating: reviewRating.reducer,
+  createDiscount: createDiscount.reducer,
 });
 
 const persistConfig = {

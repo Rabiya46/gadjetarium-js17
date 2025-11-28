@@ -1,9 +1,9 @@
 import { Grid, styled } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
-// import { actionGoodSlice } from "../../../redux/slices/goods-slice";
+import { actionGoodSlice } from "../../../redux/slices/goods-slice";
 import Search from "../../UI/Search";
 
 const SearchItem = () => {
@@ -16,24 +16,24 @@ const SearchItem = () => {
     setSearchValue(e.target.value);
   };
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (params.searchText) {
-    //   setSearchValue(params.searchText);
-    // }
+    if (params.searchText) {
+      setSearchValue(params.searchText);
+    }
   }, [params.searchText]);
 
   useEffect(() => {
-    // dispatch(
-    //   actionGoodSlice.changeParams({ key: "searchText", value: searchTerm })
-    // );
-    // dispatch(
-    //   actionGoodSlice.changeLocalParams({
-    //     key: "searchText",
-    //     value: searchTerm,
-    //   })
-    // );
+    dispatch(
+      actionGoodSlice.changeParams({ key: "searchText", value: searchTerm })
+    );
+    dispatch(
+      actionGoodSlice.changeLocalParams({
+        key: "searchText",
+        value: searchTerm,
+      })
+    );
   }, [searchTerm]);
 
   return (

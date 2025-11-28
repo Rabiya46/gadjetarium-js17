@@ -99,6 +99,8 @@ const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  console.log(data);
+
   // const data = {
   //   id: 3,
   //   brandName: "Xiaomi",
@@ -122,7 +124,7 @@ const ProductDetails = ({ data }) => {
   // };
 
   const plusHandler = () => {
-    if (count < data.count) {
+    if (count < data?.count) {
       setCount(count + 1);
     }
   };
@@ -149,7 +151,7 @@ const ProductDetails = ({ data }) => {
             {/* Image Section */}
             <Grid item xs={12} lg={6}>
               <ImageContainer>
-                <img src={data.images[0]} alt={data.name} />
+                <img src={data?.images[0]} alt={data?.name} />
               </ImageContainer>
             </Grid>
 
@@ -159,27 +161,27 @@ const ProductDetails = ({ data }) => {
                 {/* Product Title */}
                 <Box>
                   <Typography variant="h4" sx={{ fontWeight: 600, mb: 2 }}>
-                    {data.brandName} {data.name}
+                    {data?.brandName} {data?.name}
                   </Typography>
                   <Box
                     sx={{ display: "flex", gap: 3, mb: 1, flexWrap: "wrap" }}
                   >
                     <Typography sx={{ color: "#4caf50", fontWeight: 600 }}>
-                      В наличии ({data.count} шт)
+                      В наличии ({data?.count} шт)
                     </Typography>
                     <Typography sx={{ color: "#757575" }}>
-                      Артикул: {data.article}
+                      Артикул: {data?.article}
                     </Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Rating
-                      value={data.rating}
+                      value={data?.rating}
                       precision={0.5}
                       readOnly
                       size="small"
                     />
                     <Typography variant="body2" sx={{ color: "#757575" }}>
-                      ({data.rating.toFixed(1)})
+                      ({data?.rating.toFixed(1)})
                     </Typography>
                   </Box>
                 </Box>

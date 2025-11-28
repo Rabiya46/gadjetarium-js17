@@ -22,9 +22,52 @@ export const getProductDetailThunk = createAsyncThunk(
   }
 );
 
+export const getSubproductDetailThunk = createAsyncThunk(
+  "productDetail/getSubproductDetailThunk",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/api/subproducts/${id}`);
+
+      return response.data;
+    } catch (error) {
+      if (rejectWithValue) {
+        return error;
+      }
+      return error;
+    }
+  }
+);
+
+export const getSubproductDescriptionThunk = createAsyncThunk(
+  "productDetail/getSubproductDescriptionThunk",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/subproducts/${id}/description`
+        // {
+        //   params: {
+        //     id: data.product,
+        //     attribute: data.attribute,
+        //     size: data.size,
+        //   },
+        // }
+      );
+
+      return response.data;
+    } catch (error) {
+      if (rejectWithValue) {
+        return error;
+      }
+      return error;
+    }
+  }
+);
+
 const initialState = {
   data: {},
   details: {},
+  subproductDetails: {},
+  description: {},
   isLoading: false,
   images: [],
   count: 1,
@@ -60,6 +103,29 @@ const adminProductDetailsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getProductDetailThunk.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getSubproductDetailThunk.fulfilled, (state, action) => {
+      state.subproductDetails = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getSubproductDetailThunk.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSubproductDetailThunk.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(
+      getSubproductDescriptionThunk.fulfilled,
+      (state, action) => {
+        state.description = action.payload;
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(getSubproductDescriptionThunk.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getSubproductDescriptionThunk.rejected, (state) => {
       state.isLoading = false;
     });
   },

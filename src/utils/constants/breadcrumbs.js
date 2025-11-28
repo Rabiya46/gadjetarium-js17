@@ -107,6 +107,14 @@ export const BREADCRUMBS = [
   },
   {
     path: `${ROUTES.ADMIN}/${ROUTES.GOODS}/${ROUTES.PRODUCT}`,
+    breadcrumb: null,
+  },
+  {
+    path: `${ROUTES.ADMIN}/${ROUTES.GOODS}/product${ROUTES.PRODUCT}/subproducts`,
+    breadcrumb: null,
+  },
+  {
+    path: `${ROUTES.ADMIN}/${ROUTES.GOODS}/product/${ROUTES.PRODUCT}/subproducts/:id`,
     breadcrumb: AdminProductDetailBreadcrumbs,
   },
   {

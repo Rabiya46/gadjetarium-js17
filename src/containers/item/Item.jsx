@@ -8,6 +8,7 @@ import { fetchViewedProductThunk } from "../../redux/slices/viewed-product-slice
 
 const Item = () => {
   const dipatch = useDispatch();
+
   const { catalogItem } = useParams();
 
   useEffect(() => {

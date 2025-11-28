@@ -9,6 +9,7 @@ const AddProduct = lazy(() => import("../containers/add-product/AddProduct"));
 const Orders = lazy(() => import("../containers/orders/Orders"));
 const AdminLayout = lazy(() => import("../layout/admin"));
 const Goods = lazy(() => import("../containers/goods"));
+const InnerGoods = lazy(() => import("../containers/inner-goods/index"));
 const OrderItem = lazy(() => import("../components/orders/OrderItem"));
 const Forms = lazy(() => import("../components/add_product/Forms"));
 const PriceQuantity = lazy(() => {
@@ -41,8 +42,11 @@ const AdminRoutes = () => {
           </Suspense>
         }
       >
+        {/* Главная админка */}
         <Route path="/" element={<Admin />}>
           <Route index element={<Navigate to={ROUTES.GOODS} />} />
+
+          {/* GOODS */}
           <Route
             path="goods"
             element={
@@ -50,9 +54,58 @@ const AdminRoutes = () => {
                 <Goods />
               </Suspense>
             }
-          />
+          >
+            {/* Таблица подпродуктов */}
+            <Route
+              path="product/:product/subproducts"
+              element={
+                <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                  <InnerGoods />
+                </Suspense>
+              }
+            />
+
+            {/* Детали субпродукта */}
+            <Route
+              path="product/:product/subproducts/:id"
+              element={
+                <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                  <MainProductDetails />
+                </Suspense>
+              }
+            >
+              <Route
+                path="description"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <DescriptionTabItem />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="characteristics"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <CharacteristicsTabItem />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="reviews"
+                element={
+                  <Suspense fallback={<GadgetariumSpinnerLoading />}>
+                    <ReviewsTabItem />
+                  </Suspense>
+                }
+              />
+            </Route>
+          </Route>
+
+          {/* ORDERS */}
           <Route
-            path={`${ROUTES.ORDERS}`}
+            path={ROUTES.ORDERS}
             element={
               <Suspense fallback={<GadgetariumSpinnerLoading />}>
                 <Orders />
@@ -68,8 +121,9 @@ const AdminRoutes = () => {
             }
           />
 
+          {/* REVIEWS & RATING */}
           <Route
-            path={`${ROUTES.REVIEWSRATING}`}
+            path={ROUTES.REVIEWSRATING}
             element={
               <Suspense fallback={<GadgetariumSpinnerLoading />}>
                 <ReviewRating />
@@ -77,41 +131,8 @@ const AdminRoutes = () => {
             }
           />
         </Route>
-        <Route
-          path={`${ROUTES.GOODS}/${ROUTES.PRODUCT}`}
-          element={
-            <Suspense fallback={<GadgetariumSpinnerLoading />}>
-              <MainProductDetails />
-            </Suspense>
-          }
-        >
-          <Route
-            path="description"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <DescriptionTabItem />
-              </Suspense>
-            }
-          />
-          <Route
-            path="characteristics"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <CharacteristicsTabItem />
-              </Suspense>
-            }
-          />
 
-          <Route
-            path="reviews"
-            element={
-              <Suspense fallback={<GadgetariumSpinnerLoading />}>
-                <ReviewsTabItem />
-              </Suspense>
-            }
-          />
-        </Route>
-
+        {/* ADD PRODUCT */}
         <Route
           path={`${ROUTES.GOODS}/${ROUTES.ADDPRODUCT}`}
           element={
@@ -128,6 +149,7 @@ const AdminRoutes = () => {
               </Suspense>
             }
           />
+
           <Route
             path="part-2"
             element={
@@ -136,6 +158,7 @@ const AdminRoutes = () => {
               </Suspense>
             }
           />
+
           <Route
             path="part-3"
             element={

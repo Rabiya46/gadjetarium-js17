@@ -92,11 +92,11 @@ const Home = () => {
                   <Grid item xs={2.4} key={product.id}>
                     <ProductCard
                       // categoryId={product.categoryId}
-                      compared={false}
+                      compared={product.isInComparison}
                       count={product.count}
                       countOfReview={product.ratingCount}
                       discountPrice={product.priceAfterDiscount}
-                      favorite={false}
+                      favorite={product.isFavorite}
                       productId={product.id}
                       productImage={product.photo}
                       productName={product.name}

@@ -6,6 +6,7 @@ export const sendMailingThunk = createAsyncThunk(
   async (data) => {
     try {
       const response = await axiosInstance.post("/api/mailings/send", data);
+
       return response.data;
     } catch (error) {
       return error;
@@ -17,7 +18,7 @@ const initialState = {
   errors: {
     message: null,
   },
-  isLoading: "",
+  isLoading: false,
   promiseMessage: null,
 };
 
@@ -25,7 +26,17 @@ const mailingSlice = createSlice({
   name: "mailingSlice",
   initialState,
   reducers: {},
-  extraReducers: () => {},
+  extraReducers: (builder) => {
+    builder.addCase(sendMailingThunk.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(sendMailingThunk.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(sendMailingThunk.rejected, (state) => {
+      state.isLoading = false;
+    });
+  },
 });
 
 export const actionMailingSlice = mailingSlice.actions;

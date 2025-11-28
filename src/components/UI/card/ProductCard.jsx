@@ -270,6 +270,7 @@ const ProductCard = (props) => {
             tokenId: response?.user?.accessToken,
             navigate,
             isSignUp: true,
+            closeModalWindow,
           })
         );
       })
