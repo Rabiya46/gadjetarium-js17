@@ -169,7 +169,7 @@ const FunctionalIconsItemTooltipTitle = ({
 
                   <span className="name">
                     <p>{item.productName}</p>
-                    <p> {item.characteristics.memoryOfPhone}gb</p>
+                    <p> {item?.characteristics?.memoryOfPhone}gb</p>
                     <p>{item.color.toLowerCase()}</p>
                   </span>
 

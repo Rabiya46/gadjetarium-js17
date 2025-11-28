@@ -82,7 +82,6 @@ const OrderItem = () => {
                   <Typography className="li-value">{paymentMethod}</Typography>
                 </Box>
               </Box>
-
               <Box className="total-box">
                 <Typography className="li">Итого к оплате:</Typography>
                 <Typography className="li-value">

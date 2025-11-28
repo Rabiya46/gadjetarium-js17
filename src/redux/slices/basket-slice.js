@@ -43,7 +43,9 @@ const postProductToFavorite = createAsyncThunk(
   "basket/postProductToFavorite",
   async (data, { dispatch }) => {
     try {
-      const response = await axiosInstance.post("userBasket/move", data);
+      const response = await axiosInstance.post("/api/baskets/favorite", {
+        data: { ids: data },
+      });
       const result = await response.data;
 
       dispatch(getBasketProduct());
@@ -57,9 +59,44 @@ const postProductToFavorite = createAsyncThunk(
 const deleteProductBasket = createAsyncThunk(
   "basket/deleteProduct",
   async (data, { dispatch }) => {
-    const response = await axiosInstance.delete("userBasket", { data });
+    const response = await axiosInstance.delete("api/baskets/delete", {
+      data: { ids: data },
+    });
     const result = await response.data;
 
+    dispatch(getBasketProduct());
+
+    return result;
+  }
+);
+
+const getBasketInfographic = createAsyncThunk(
+  "basket/getInfographic",
+  async (subproductIds) => {
+    const response = await axiosInstance.post("api/baskets/infographic", {
+      ids: subproductIds,
+    });
+    const result = await response.data;
+    return result;
+  }
+);
+
+const updateProductCount = createAsyncThunk(
+  "basket/updateProductCount",
+  async ({ subproductId, isPositive }, { dispatch }) => {
+    const response = await axiosInstance.post(
+      `api/baskets/selected-count`,
+      null,
+      {
+        params: {
+          subproductId,
+          isPositive,
+        },
+      }
+    );
+    const result = await response.data;
+
+    // Обновляем корзину после изменения количества
     dispatch(getBasketProduct());
 
     return result;
@@ -70,6 +107,8 @@ const initialState = {
   data: [],
   isLoading: false,
   sumOrderData: {},
+  infographic: null,
+  isInfographicLoading: false,
 };
 
 const basketProducts = createSlice({
@@ -94,6 +133,16 @@ const basketProducts = createSlice({
 
       .addCase(getBasketProduct.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(getBasketInfographic.pending, (state) => {
+        state.isInfographicLoading = true;
+      })
+      .addCase(getBasketInfographic.fulfilled, (state, action) => {
+        state.isInfographicLoading = false;
+        state.infographic = action.payload;
+      })
+      .addCase(getBasketInfographic.rejected, (state) => {
+        state.isInfographicLoading = false;
       });
   },
 });
@@ -105,4 +154,6 @@ export {
   getBasketProduct,
   postProductToFavorite,
   deleteProductBasket,
+  updateProductCount,
+  getBasketInfographic,
 };

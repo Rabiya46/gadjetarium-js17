@@ -19,7 +19,7 @@ const DescriptionTabItem = () => {
   return (
     <Styled_Wrapper>
       <ReactPlayer
-        url={description.video}
+        url={description?.video}
         config={{ youtube: { playerVars: { showinfo: 1 } } }}
         controls
         width="100%"
@@ -27,7 +27,7 @@ const DescriptionTabItem = () => {
       />
       <div
         className="description"
-        dangerouslySetInnerHTML={{ __html: description.description }}
+        dangerouslySetInnerHTML={{ __html: description?.description }}
       />
     </Styled_Wrapper>
   );
