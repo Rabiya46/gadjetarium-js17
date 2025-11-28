@@ -1,11 +1,17 @@
-import { Box, FormLabel, styled, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  FormLabel,
+  styled,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 // import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { DeleteIcon, DownloadBannerIcon } from "../../assets";
 import { sendMailingThunk } from "../../redux/slices/mailing-slice";
@@ -20,6 +26,8 @@ const MailGenius = ({ openModal, setOpenModal }) => {
 
   const dispatch = useDispatch();
 
+  const { isLoading } = useSelector((state) => state.mailing);
+
   const { values, setFieldValue, handleChange, handleSubmit } = useFormik({
     initialValues: {
       name: "",
@@ -30,11 +38,11 @@ const MailGenius = ({ openModal, setOpenModal }) => {
     },
     onSubmit: (value, action) => {
       dispatch(sendMailingThunk(value)).then((res) => {
-        if (res.payload.status === "ok") {
+        if (res.payload.httpStatus === "OK") {
           action.resetForm();
           setDates([null, null]);
           setOpenModal();
-          return toast.success("Успешно отправлен");
+          return toast.success(res.payload.message);
         }
         return toast.error("Что-то не так с сервером или данными");
       });
@@ -179,8 +187,13 @@ const MailGenius = ({ openModal, setOpenModal }) => {
               variant="contained"
               className="send_button"
               type="submit"
+              disabled={
+                values.description === "" ||
+                values.name === "" ||
+                values.image === ""
+              }
             >
-              отправить
+              {isLoading ? <CircularProgress size="30px" /> : "отправить"}
             </StyledButton>
           </Box>
         </Box>
@@ -243,6 +256,15 @@ const StyledButton = styled(Button)(({ theme }) => ({
   "&.brand_button": {
     width: "30px",
     height: "30px",
+  },
+
+  "&.Mui-disabled": {
+    background: "#E0E0E0 !important", // пример серого фона
+    color: "#9E9E9E !important", // светло-серый текст
+    borderColor: "#BDBDBD !important", // если нужна рамка
+    cursor: "not-allowed !important",
+    pointerEvents: "auto", // чтобы cursor работал
+    opacity: 0.7, // лёгкая прозрачность
   },
 }));
 

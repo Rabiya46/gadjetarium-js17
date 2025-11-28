@@ -1,4 +1,11 @@
-import { Tabs as MuiTabs, Tab, Box, styled, Typography } from "@mui/material";
+import {
+  Tabs as MuiTabs,
+  Tab,
+  Box,
+  styled,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -8,19 +15,15 @@ import axiosInstance from "../../config/axios-instance";
 
 export default function Tabs({ tabs = [] }) {
   const [query, setQuery] = useState(tabs[0].param);
+  const [loading, setLoading] = useState(false);
+  const [downloadTime, setDownloadTime] = useState(0); // время в секундах
 
   const navigate = useNavigate();
-
   const location = useLocation();
-
   const { details } = useSelector((state) => state.productDetails);
 
-  console.log(details);
-
   useEffect(() => {
-    const route =
-      location.pathname.split("/")[location.pathname.split("/").length - 1];
-
+    const route = location.pathname.split("/").pop();
     setQuery(route);
   }, [location.pathname]);
 
@@ -29,24 +32,39 @@ export default function Tabs({ tabs = [] }) {
     navigate(newParam);
   };
 
-  const downloadPDFFileHandler = () => {
-    axiosInstance
-      .get(`/api/subproducts/${details.id}/description`, {
-        responseType: "arraybuffer",
-        headers: {
-          "Content-Type": "application/json",
-          // Accept: "application/pdf",
-        },
-      })
-      .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data.file]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "file.pdf"); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch(() => toast.error("Что-то не так с сервером или данными"));
+  const downloadPDFFileHandler = async () => {
+    try {
+      setLoading(true);
+      setDownloadTime(0);
+
+      const startTime = performance.now();
+
+      const response = await axiosInstance.get(
+        `/api/images/download-pdf/${details.id}`,
+        {
+          responseType: "arraybuffer",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/pdf",
+          },
+        }
+      );
+
+      const endTime = performance.now();
+      setDownloadTime(((endTime - startTime) / 1000).toFixed(2)); // время в секундах
+
+      // скачивание файла
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (err) {
+      toast.error("Что-то не так с сервером или данными");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,14 +86,27 @@ export default function Tabs({ tabs = [] }) {
             />
           ))}
         </TabsStyled>
-        <Typography
-          variant="body1"
-          className="download_pdf flex gap pointer"
-          onClick={downloadPDFFileHandler}
+
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={2}
+          className="download_wrapper"
         >
-          <DownloadPDFIcon />
-          Скачать документ.pdf
-        </Typography>
+          <Typography
+            variant="body1"
+            className="download_pdf flex gap pointer"
+            onClick={downloadPDFFileHandler}
+          >
+            <DownloadPDFIcon />
+            Скачать документ.pdf
+          </Typography>
+
+          {loading && <CircularProgress size={24} />}
+          {!loading && downloadTime > 0 && (
+            <Typography variant="body2">{downloadTime} сек</Typography>
+          )}
+        </Box>
       </BoxStyled>
     </>
   );
@@ -89,6 +120,8 @@ export const BoxStyled = styled(Box)(() => ({
   "& .download_pdf": {
     padding: 5,
     alignSelf: "flex-end",
+    display: "flex",
+    alignItems: "center",
   },
 }));
 

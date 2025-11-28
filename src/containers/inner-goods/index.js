@@ -31,6 +31,4 @@ const InnerGoods = () => {
 
 export default InnerGoods;
 
-const StyledGoods = styled(Box)(() => ({
-  padding: "0 0 130px",
-}));
+const StyledGoods = styled(Box)(() => ({}));

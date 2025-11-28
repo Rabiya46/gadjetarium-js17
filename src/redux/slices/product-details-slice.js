@@ -4,9 +4,9 @@ import axiosInstance from "../../config/axios-instance";
 export const getProductDetailThunk = createAsyncThunk(
   "productDetail/getProductDetailThunk",
 
-  async ({ product }, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/api/subproducts/${product}`);
+      const response = await axiosInstance.get(`/api/subproducts/${id}`);
 
       return response.data;
     } catch (error) {
@@ -43,8 +43,25 @@ export const getProductRatingDetailThunk = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(
-        `/api/subproducts/${data.product}/rating`
+        `/api/subproducts/${data.id}/rating`
       );
+
+      return response.data;
+    } catch (error) {
+      if (rejectWithValue) {
+        return error;
+      }
+      return error;
+    }
+  }
+);
+
+export const getProductCommentsDetailThunk = createAsyncThunk(
+  "productDetail/getProductCommentsDetailThunk",
+
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/api/reviews/${data.id}`);
 
       return response.data;
     } catch (error) {
@@ -65,6 +82,7 @@ const initialState = {
   chooseItem: 0,
   characteristics: {},
   rating: {},
+  comments: [],
 };
 
 const productDetailsSlice = createSlice({
@@ -119,6 +137,19 @@ const productDetailsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getProductRatingDetailThunk.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(
+      getProductCommentsDetailThunk.fulfilled,
+      (state, action) => {
+        state.comments = action.payload;
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(getProductCommentsDetailThunk.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getProductCommentsDetailThunk.rejected, (state) => {
       state.isLoading = false;
     });
   },

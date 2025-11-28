@@ -1,10 +1,7 @@
 import { Box, styled } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const TableCellImageSubproduct = ({ id, image }) => {
-  const { product } = useParams();
-  console.log(product);
-
   return (
     <StyledTableCellImage className="flex-start">
       <Link to={`${id}/description`}>

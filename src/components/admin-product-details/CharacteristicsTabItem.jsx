@@ -263,7 +263,6 @@ export default CharacteristicsTabItem;
 const Styled_Wrapper = styled(Box)(() => ({
   width: "90vw",
   paddingTop: "73px",
-  height: "100vh",
 
   "& h6": {
     fontFamily: "Inter",

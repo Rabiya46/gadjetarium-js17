@@ -12,7 +12,7 @@ import { getProductsThunk } from "../../redux/slices/goods-slice";
 const Goods = () => {
   const { params } = useSelector((state) => state.goods);
 
-  const { product } = useParams();
+  const { product, id } = useParams();
 
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ const Goods = () => {
     <StyledGoods>
       <Container>
         <Grid container spacing={3} className="flex between">
-          {!product && (
+          {!id && (
             <>
               <SearchItem />
 
@@ -35,10 +35,10 @@ const Goods = () => {
               <ContentTab />
 
               <ContentDatePicker />
-
-              <ContentTable />
             </>
           )}
+
+          {!product && <ContentTable />}
 
           <Outlet />
         </Grid>

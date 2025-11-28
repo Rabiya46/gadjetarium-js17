@@ -1,4 +1,10 @@
-import { Box, FormLabel, styled, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  FormLabel,
+  styled,
+  Typography,
+} from "@mui/material";
 import { format } from "date-fns";
 import { useFormik } from "formik";
 import React, { useState } from "react";
@@ -6,19 +12,26 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { postDiscountThunk } from "../../../redux/slices/create-discount-slice";
-import { actionGoodSlice } from "../../../redux/slices/goods-slice";
+import {
+  actionGoodSlice,
+  getProductsBySubproductsThunk,
+} from "../../../redux/slices/goods-slice";
 import validationSchema from "../../../utils/constants/discount";
 import DatePicker from "../../orders/DatePicker";
 import Button from "../../UI/button/Button";
 import Input from "../../UI/input/Input";
 import Modal from "../../UI/Modal";
+import { useParams } from "react-router-dom";
 
 const CreateDiscount = ({ openModal, setOpenModal }) => {
   const [dates, setDates] = useState([null, null]);
 
   const { choosedItems, params } = useSelector((state) => state.goods);
+  const { isLoading } = useSelector((state) => state.createDiscount);
 
   const dispatch = useDispatch();
+
+  const { product } = useParams();
 
   const { values, handleChange, setFieldValue, handleSubmit, errors } =
     useFormik({
@@ -33,11 +46,17 @@ const CreateDiscount = ({ openModal, setOpenModal }) => {
       onSubmit: (values, action) => {
         dispatch(postDiscountThunk({ data: values, params })).then((res) => {
           if (res.payload.message !== "Network Error") {
-            if (res.payload.status === "ok") {
-              toast.success("Скидка успешно сохранена!");
+            if (res.payload.httpStatus === "OK") {
+              toast.success(res.payload.message);
+
               setOpenModal();
               action.resetForm();
+
               dispatch(actionGoodSlice.resetChoosedProducts());
+
+              if (product) {
+                dispatch(getProductsBySubproductsThunk(product));
+              }
             }
           } else {
             toast.error("Что-то не так с серверами или данными");
@@ -117,7 +136,7 @@ const CreateDiscount = ({ openModal, setOpenModal }) => {
               className="send_button"
               type="submit"
             >
-              отправить
+              {isLoading ? <CircularProgress size="30px" /> : "отправить"}
             </StyledButton>
           </Box>
         </Box>

@@ -10,7 +10,7 @@ export const checkInOrderType = (key) => {
 };
 
 export const priceProductSeparate = (number) => {
-  return number.toFixed().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+  return number?.toFixed()?.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
 };
 
 export const checkInOrderStatus = (key) => {

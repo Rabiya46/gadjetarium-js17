@@ -72,6 +72,4 @@ const StyledContentTable = styled(Container)(() => ({
 
 const StyledTable = styled(Table)(() => ({}));
 
-const Image = styled("img")(() => ({
-  //   paddingLeft: "20%",
-}));
+const Image = styled("img")(() => ({}));
