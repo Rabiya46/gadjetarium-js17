@@ -31,7 +31,7 @@ const Ordering = () => {
   const {
     data: basketData,
     isLoading: loading,
-    sumOrderData,
+    infographic,
   } = useSelector((state) => state.basket);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -144,7 +144,7 @@ const Ordering = () => {
                   </Box>
 
                   <Box>
-                    <Typography>{sumOrderData.count} шт.</Typography>
+                    <Typography>{infographic?.count} шт.</Typography>
                     <Typography
                       className="discount"
                       style={{
@@ -154,7 +154,7 @@ const Ordering = () => {
                     >
                       –{" "}
                       {priceProductSeparate(
-                        Number(String(parseInt(sumOrderData.discount)))
+                        Number(String(parseInt(infographic?.discount)))
                       )}
                       <li>c</li>
                     </Typography>
@@ -165,7 +165,7 @@ const Ordering = () => {
                       }}
                     >
                       {priceProductSeparate(
-                        Number(String(parseInt(sumOrderData.price)))
+                        Number(String(parseInt(infographic?.sum)))
                       )}
                       <li>c</li>
                     </Typography>
@@ -180,7 +180,7 @@ const Ordering = () => {
                     }}
                   >
                     {priceProductSeparate(
-                      Number(String(parseInt(sumOrderData.total)))
+                      Number(String(parseInt(infographic?.totalPrice)))
                     )}
                     <li>c</li>
                   </Typography>
@@ -198,13 +198,13 @@ const Ordering = () => {
                     }}
                   >
                     <img
-                      src={product.image}
+                      src={product?.photo}
                       alt="image"
                       className="image-product"
                     />
                     <Box>
                       <Box className="product-name">
-                        <Typography>{product.productName}</Typography>
+                        <Typography>{product.name}</Typography>
                         <Typography>
                           {product?.characteristics?.memoryOfPhone}gb
                         </Typography>
@@ -212,9 +212,17 @@ const Ordering = () => {
                       </Box>
 
                       <Box className="rest-text">
-                        <p>Артикул: {product.vendorCode}</p>
+                        <p>Артикул: {product.article}</p>
                         {/* <p>Кол-во: {product.color}</p> */}
                         <p>Цвет: {product.color}</p>
+                        <div
+                          style={{
+                            height: "20px",
+                            width: "20px",
+                            borderRadius: "5px",
+                            backgroundColor: product.color,
+                          }}
+                        />
                       </Box>
                     </Box>
                   </Box>

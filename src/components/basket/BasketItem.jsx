@@ -1,101 +1,106 @@
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
   deleteProductBasket,
-  postProductToFavorite,
+  updateProductCount,
 } from "../../redux/slices/basket-slice";
-import CartProductInBasket from "../CartProductInBasket";
-import PopUp from "../UI/PopUp";
+import { postAllBasketFavorite } from "../../redux/slices/favorite-slice";
+import CartProductInBasket from "../../components/CartProductInBasket";
+import PopUp from "../../components/UI/PopUp";
 
 const BasketItem = ({
-  image,
+  photo,
   rating,
-  countOfReviews,
-  vendorCode,
+  ratingCount,
+  article,
   price,
-  countOfSubproduct,
+  count,
   characteristics,
   color,
-  productName,
+  name,
   allChecked,
   id,
   setAllId,
-  setSumOrderData,
-  productCount,
-  orderCount,
+  allId,
+  selectedCount,
+  priceAfterDiscount,
+  isFavorite,
 }) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
-  const [text, setText] = useState("");
   const [dropDown, setDropDown] = useState(false);
 
-  const onPlus = (id) => {
-    setSumOrderData((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            productCount: item.productCount + 1,
-          };
-        }
-
-        return item;
-      })
-    );
-  };
-
-  const onMinus = (id) => {
-    setSumOrderData((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          return { ...item, productCount: item.productCount - 1 };
-        }
-
-        return item;
-      })
-    );
-  };
-
-  const onChecked = (e) => {
-    setCheck((prev) => !prev);
-
-    if (e.target.value === "false") {
-      setAllId((prev) => [...prev, id]);
+  // Обработчик увеличения количества
+  const handlePlus = useCallback(() => {
+    if (selectedCount < count) {
+      dispatch(
+        updateProductCount({
+          subproductId: id,
+          isPositive: true,
+          selectedIds: allId,
+        })
+      );
     }
+  }, [id, selectedCount, count, allId, dispatch]);
 
-    if (e.target.value === "true") {
-      setAllId((prev) => prev.filter((ID) => ID !== id));
+  // Обработчик уменьшения количества
+  const handleMinus = useCallback(() => {
+    if (selectedCount > 1) {
+      dispatch(
+        updateProductCount({
+          subproductId: id,
+          isPositive: false,
+          selectedIds: allId,
+        })
+      );
     }
-  };
+  }, [id, selectedCount, allId, dispatch]);
 
-  const closeDropDown = () => {
+  // Обработчик изменения чекбокса
+  const handleChecked = useCallback(() => {
+    setCheck((prev) => {
+      const newChecked = !prev;
+
+      setAllId((prevIds) =>
+        newChecked
+          ? [...prevIds, id]
+          : prevIds.filter((itemId) => itemId !== id)
+      );
+
+      return newChecked;
+    });
+  }, [id, setAllId]);
+
+  // Закрытие всплывающего окна
+  const closeDropDown = useCallback(() => {
     setDropDown(false);
-  };
+  }, []);
 
-  const onFavorite = () => {
-    dispatch(postProductToFavorite([id])).then(() => {
-      setText("Товар успешно добавлен в избранное!");
+  // Добавление в избранное
+  const handleFavorite = useCallback(() => {
+    dispatch(postAllBasketFavorite([id])).then(() => {
       setDropDown(true);
     });
-  };
+  }, [id, dispatch]);
 
-  const onDelete = () => {
+  // Удаление товара
+  const handleDelete = useCallback(() => {
     dispatch(deleteProductBasket([id]));
-  };
+  }, [id, dispatch]);
 
   return (
     <>
       <PopUp
         open={dropDown}
         handleClose={closeDropDown}
-        transitionTitle="Перейти в корзину"
-        addedTitle={text}
+        transitionTitle="Перейти в избранное"
+        addedTitle="Товар успешно добавлен в избранное!"
         durationSnackbar={2000}
         icon={true}
         vertical="top"
         horizontal="right"
-        to="/cart"
+        to="/favorite"
       />
 
       <Checkbox
@@ -106,29 +111,28 @@ const BasketItem = ({
           alignSelf: "flex-start",
         }}
         checked={allChecked || check}
-        onClick={onChecked}
-        value={check}
+        onChange={handleChecked}
       />
 
       <CartProductInBasket
-        image={image}
+        image={photo}
         rating={rating}
-        reviewCount={countOfReviews}
-        code={vendorCode}
-        price={price}
+        reviewCount={ratingCount}
+        code={article}
+        price={priceAfterDiscount || price}
         color={color}
         memoryOfPhone={characteristics?.memoryOfPhone}
-        availableCount={countOfSubproduct}
-        onPlus={onPlus}
-        onMinus={onMinus}
-        isMinusDisabled={productCount + orderCount == 1}
-        isPlusDisabled={productCount + orderCount == countOfSubproduct}
-        name={productName}
-        onFavorite={onFavorite}
-        onDelete={onDelete}
+        availableCount={count}
+        onPlus={handlePlus}
+        onMinus={handleMinus}
+        isMinusDisabled={selectedCount <= 1}
+        isPlusDisabled={selectedCount >= count}
+        name={name}
+        isFavorite={isFavorite}
+        onFavorite={handleFavorite}
+        onDelete={handleDelete}
         id={id}
-        productCount={productCount}
-        orderCount={orderCount}
+        selectedCount={selectedCount}
       />
     </>
   );

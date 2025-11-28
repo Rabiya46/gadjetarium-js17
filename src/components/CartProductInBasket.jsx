@@ -11,9 +11,10 @@ import {
 import { DeleteIconInCart, HeartActiveIcon, HeartIcon } from "../assets";
 import { notFoundImage } from "../utils/constants";
 import { priceProductSeparate } from "../utils/helpers/general";
+import { useDispatch } from "react-redux";
+import { postFavoriteProducts } from "../redux/slices/favorite-slice";
 
 const CartProductInBasket = ({
-  onFavorite,
   onDelete,
   name,
   image,
@@ -29,11 +30,19 @@ const CartProductInBasket = ({
   color,
   memoryOfPhone,
   id,
-  productCount,
-  orderCount,
+  selectedCount,
+  isFavorite,
+  // productCount,
+  // orderCount,
 }) => {
-  const priceProduct = price * productCount;
+  const priceProduct = price;
+  // console.log(orderCount);
+  // console.log(orderCount);
+  const dispatch = useDispatch();
 
+  const handlerIsFavorite = (id) => {
+    dispatch(postFavoriteProducts({ productId: id }));
+  };
   return (
     <StyledMainContainer>
       <StyledCard>
@@ -77,7 +86,8 @@ const CartProductInBasket = ({
                   -
                 </ButtonCounter>
 
-                <TextCount>{orderCount + productCount - 1}</TextCount>
+                {/* <TextCount>{orderCount + productCount - 1}</TextCount> */}
+                <TextCount>{selectedCount}</TextCount>
 
                 <ButtonCounter
                   onClick={() => onPlus(id)}
@@ -93,10 +103,19 @@ const CartProductInBasket = ({
             </BoxCounterAndPrice>
 
             <BoxIcons>
-              <IconsTexts style={{ width: "110px" }} onClick={onFavorite}>
+              <IconsTexts
+                style={{ width: "110px" }}
+                onClick={() => handlerIsFavorite(id)}
+              >
                 <Checkbox
-                  icon={<IconHeart className="heart" />}
-                  checkedIcon={<ActiveHeartIcon />}
+                  icon={
+                    isFavorite ? (
+                      <ActiveHeartIcon />
+                    ) : (
+                      // <ActiveHeartIcon />
+                      <IconHeart className="heart" />
+                    )
+                  }
                 />
                 В избранное
               </IconsTexts>
